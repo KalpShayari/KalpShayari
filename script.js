@@ -85,6 +85,62 @@
       tag: 'Bronze',
       text: 'A friend is not the one who stays\nbeside you every hour.\nA friend is one who lives inside\nyour heart with all its power.',
       em: 'lives inside your heart'
+    },
+    {
+      id: 's13',
+      rank: 'gold',
+      tag: 'Gold',
+      text: 'Aine me khudko dekho,\ngulab nazar aye.\nTumhara naam likhu,\nto najane kyu sharab nazar aaye.',
+      em: 'sharab nazar aaye'
+    },
+    {
+      id: 's14',
+      rank: 'silver',
+      tag: 'Silver',
+      text: 'Dil ke darwaze par dastak di,\nab dastak jaha di he,\nwaha dil hi nahi milta.',
+      em: 'waha dil hi nahi milta'
+    },
+    {
+      id: 's15',
+      rank: 'platinum',
+      tag: 'Platinum',
+      text: 'Kahti he tujh garib ko,\nmeri gali ka rasta kya pata.\nKambakht teri gali guzar guzar ke,\nhi garib hua hu.',
+      em: 'hi garib hua hu'
+    },
+    {
+      id: 's16',
+      rank: 'gold',
+      tag: 'Gold',
+      text: 'Unki akho ki gehraiyo me,\nmera dil kho chuka he.\nAb ye dil unka,\npar unka kisi aur ka ho chuka he.',
+      em: 'kisi aur ka ho chuka he'
+    },
+    {
+      id: 's17',
+      rank: 'silver',
+      tag: 'Silver',
+      text: 'Haqeeqat ne hade par kardi he,\nkhwab di.\nTumhe dekhke hamne bhi pi li,\nakhkhi bottle sharab di.',
+      em: 'akhkhi bottle sharab di'
+    },
+    {
+      id: 's18',
+      rank: 'platinum',
+      tag: 'Platinum',
+      text: 'Duniya me aye ho,\naur kahte ho me mohabbat se,\napna dil nahi sita.\nAre mekhane me khade ho,\naur kahte ho me sharab nahi pita.',
+      em: 'me sharab nahi pita'
+    },
+    {
+      id: 's19',
+      rank: 'gold',
+      tag: 'Gold',
+      text: 'Tumhare hatho me mahandi dekhu,\nto rang surkh lal nazar aata he.\nTumhari aakho me jab chand dekhu,\nto chand me chand nazar aata he.',
+      em: 'chand me chand nazar aata he'
+    },
+    {
+      id: 's20',
+      rank: 'silver',
+      tag: 'Silver',
+      text: 'Tumse akhe milau to,\nhar baat bhul jata hu.\nTumhare hath ka bana khana khau,\nto bakiyo ka swad bhul jata hu.',
+      em: 'bakiyo ka swad bhul jata hu'
     }
   ];
 
@@ -256,7 +312,7 @@
       btn.classList.remove('is-copying');
       btn.classList.add('is-copied');
       btn.setAttribute('aria-label', 'Copied');
-      toast('Sher copied ♥');
+      toast('Sher copied');
       setTimeout(() => {
         btn.classList.remove('is-copied');
         btn.setAttribute('aria-label', 'Copy sher');
@@ -355,7 +411,7 @@
       btn.classList.add('is-liked');
       btn.setAttribute('aria-pressed', 'true');
       btn.querySelector('.heart').textContent = '♥';
-      toast('Saved ♥');
+      toast('Saved');
     }
     persistLikes();
   }

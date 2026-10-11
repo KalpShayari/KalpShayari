@@ -36,14 +36,9 @@
 </head>
 <body>
 
-  <!-- ---------- HEADER (with inline menu) ---------- -->
   <header class="site-head">
     <div class="wrap">
       <div class="head-row">
-        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
-          <span class="menu-line"></span>
-          <span class="menu-line"></span>
-        </button>
         <a href="index.html" class="brand">
           <img src="shayari.png" alt="Kalp Shayari" class="brand-logo" width="48" height="48">
           <h1 class="brand-name">Kalp Shayari</h1>
@@ -53,7 +48,11 @@
     </div>
   </header>
 
-  <!-- ---------- MENU PANEL (right side) ---------- -->
+  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
+    <span class="menu-line"></span>
+    <span class="menu-line"></span>
+  </button>
+
   <div class="menu-backdrop" id="menuBackdrop" hidden></div>
 
   <aside class="menu-panel" id="menuPanel" aria-hidden="true">
@@ -72,14 +71,12 @@
     </div>
   </aside>
 
-  <!-- ---------- FILTERS ---------- -->
   <nav class="filters" aria-label="Shayari ranks">
     <div class="wrap">
       <div class="filter-row" id="filterRow"></div>
     </div>
   </nav>
 
-  <!-- ---------- CONTENT ---------- -->
   <main class="content">
     <div class="wrap">
       <div class="grid" id="grid"></div>
@@ -87,14 +84,12 @@
     </div>
   </main>
 
-  <!-- ---------- FOOTER ---------- -->
   <footer class="site-foot">
     <div class="wrap">
       <p>© <span id="year"></span> Kalp Shayari · Written by Zeeshan Khan</p>
     </div>
   </footer>
 
-  <!-- ---------- BACK TO TOP ---------- -->
   <button class="to-top" id="toTop" type="button" aria-label="Back to top">
     <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M12 19V5M5 12l7-7 7 7"/>

@@ -12,10 +12,10 @@
   --paper: #ffffff;
   --paper-soft: #fafafa;
   --accent: #b8860b;
-  --accent-soft: #f6f1e4;
   --radius: 2px;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 *,
@@ -57,6 +57,210 @@ body {
   padding: 0 28px;
 }
 
+/* ---------- MENU BUTTON ---------- */
+.menu-btn {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 60;
+  appearance: none;
+  background: var(--paper);
+  border: 1px solid var(--line-strong);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 0;
+  transition: transform 0.5s var(--ease-bounce), border-color 0.4s var(--ease),
+              box-shadow 0.4s var(--ease), background 0.4s var(--ease);
+  box-shadow: 0 2px 12px rgba(17, 17, 17, 0.04);
+}
+
+.menu-btn:hover {
+  border-color: var(--ink);
+  transform: scale(1.06);
+  box-shadow: 0 6px 22px rgba(17, 17, 17, 0.1);
+}
+
+.menu-btn:active {
+  transform: scale(0.96);
+}
+
+.menu-line {
+  display: block;
+  width: 20px;
+  height: 1.5px;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.5s var(--ease), width 0.4s var(--ease), opacity 0.3s var(--ease);
+  transform-origin: center;
+}
+
+.menu-btn:hover .menu-line:nth-child(1) { width: 14px; transform: translateX(-3px); }
+.menu-btn:hover .menu-line:nth-child(3) { width: 14px; transform: translateX(3px); }
+
+.menu-btn.is-open .menu-line:nth-child(1) {
+  transform: translateY(6.5px) rotate(45deg);
+  width: 22px;
+}
+.menu-btn.is-open .menu-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.menu-btn.is-open .menu-line:nth-child(3) {
+  transform: translateY(-6.5px) rotate(-45deg);
+  width: 22px;
+}
+
+.menu-btn.is-open:hover .menu-line:nth-child(1),
+.menu-btn.is-open:hover .menu-line:nth-child(3) {
+  transform: translateY(0) rotate(45deg);
+}
+.menu-btn.is-open:hover .menu-line:nth-child(3) {
+  transform: translateY(0) rotate(-45deg);
+}
+
+/* ---------- MENU BACKDROP ---------- */
+.menu-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(17, 17, 17, 0.35);
+  z-index: 40;
+  opacity: 0;
+  transition: opacity 0.5s var(--ease);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.menu-backdrop.is-on {
+  opacity: 1;
+}
+
+/* ---------- MENU PANEL ---------- */
+.menu-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 340px;
+  max-width: 88vw;
+  background: var(--paper);
+  border-right: 1px solid var(--line);
+  z-index: 50;
+  transform: translateX(-102%);
+  transition: transform 0.6s var(--ease-out);
+  display: flex;
+  flex-direction: column;
+  padding: 100px 40px 32px;
+  box-shadow: 20px 0 60px rgba(17, 17, 17, 0.06);
+}
+
+.menu-panel.is-open {
+  transform: translateX(0);
+}
+
+.menu-head {
+  margin-bottom: 32px;
+}
+
+.menu-label {
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.menu-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.menu-link {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  padding: 18px 0;
+  text-decoration: none;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  transition: padding-left 0.5s var(--ease), color 0.4s var(--ease);
+  overflow: hidden;
+}
+
+.menu-link::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  width: 0;
+  height: 1px;
+  background: var(--ink);
+  transition: width 0.6s var(--ease);
+}
+
+.menu-link:hover::before,
+.menu-link.is-active::before {
+  width: 100%;
+}
+
+.menu-link:hover {
+  padding-left: 10px;
+}
+
+.menu-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.4s var(--ease), transform 0.5s var(--ease);
+}
+
+.menu-link:hover .menu-num,
+.menu-link.is-active .menu-num {
+  color: var(--accent);
+  transform: translateX(-2px);
+}
+
+.menu-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  transition: transform 0.5s var(--ease);
+}
+
+.menu-link:hover .menu-text {
+  transform: translateX(4px);
+}
+
+.menu-link.is-active .menu-text {
+  font-style: italic;
+}
+
+.menu-foot {
+  padding-top: 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.menu-dot {
+  color: var(--line-strong);
+}
+
 /* ---------- HEADER ---------- */
 .site-head {
   padding: 72px 0 44px;
@@ -66,33 +270,25 @@ body {
 .brand {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 18px;
   animation: rise 0.9s var(--ease-out) both;
 }
 
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: var(--ink);
-  color: var(--paper);
-  font-family: 'Tiro Devanagari Hindi', 'Playfair Display', serif;
-  font-size: 28px;
-  line-height: 1;
-  border-radius: var(--radius);
-  transition: transform 0.6s var(--ease), border-radius 0.6s var(--ease);
+.brand-logo {
+  display: block;
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
   flex-shrink: 0;
+  transition: transform 0.7s var(--ease-bounce);
 }
 
-.brand:hover .brand-mark {
-  transform: rotate(-6deg);
-  border-radius: 50%;
+.brand:hover .brand-logo {
+  transform: rotate(-8deg) scale(1.05);
 }
 
 .brand-name {
-  font-family: 'Playfair Display', 'Tiro Devanagari Hindi', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-size: clamp(2rem, 5vw, 3.25rem);
   font-weight: 500;
   letter-spacing: -0.02em;
@@ -106,7 +302,7 @@ body {
   text-transform: uppercase;
   color: var(--ink-mute);
   margin-top: 14px;
-  padding-left: 64px;
+  padding-left: 70px;
   animation: rise 0.9s 0.12s var(--ease-out) both;
 }
 
@@ -234,7 +430,7 @@ body {
 
 .card-body {
   flex: 1;
-  font-family: 'Tiro Devanagari Hindi', 'Playfair Display', Georgia, serif;
+  font-family: 'Playfair Display', Georgia, serif;
   font-size: 1.22rem;
   line-height: 1.95;
   color: var(--ink);
@@ -264,16 +460,21 @@ body {
 }
 
 .card-tag {
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: 0.68rem;
+  font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--ink-mute);
-  transition: color 0.4s var(--ease);
+  color: var(--ink-soft);
+  padding: 4px 10px;
+  border: 1px solid var(--line-strong);
+  border-radius: 100px;
+  transition: color 0.4s var(--ease), border-color 0.4s var(--ease), background 0.4s var(--ease);
 }
 
 .card:hover .card-tag {
-  color: var(--ink-soft);
+  color: var(--ink);
+  border-color: var(--ink);
+  background: var(--paper);
 }
 
 .like {
@@ -320,7 +521,6 @@ body {
   100% { transform: scale(1); }
 }
 
-/* subtle corner accent on hover */
 .card::before,
 .card::after {
   content: '';
@@ -398,9 +598,12 @@ body {
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 720px) {
   .wrap { padding: 0 18px; }
-  .site-head { padding: 52px 0 32px; }
+  .site-head { padding: 92px 0 32px; }
   .brand-tag { padding-left: 0; margin-top: 12px; }
-  .brand-mark { width: 42px; height: 42px; font-size: 24px; }
+  .brand-logo { width: 42px; height: 42px; }
+  .menu-btn { top: 18px; left: 18px; width: 46px; height: 46px; }
+  .menu-panel { padding: 84px 28px 28px; }
+  .menu-text { font-size: 1.4rem; }
   .grid { grid-template-columns: 1fr; }
   .card { padding: 32px 24px 26px; }
   .card-body { font-size: 1.12rem; line-height: 1.9; }

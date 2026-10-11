@@ -4,10 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="y2KUdk5NLGrxUgulLoxvA0a2y3jQlVPObdNtYkIef2U" />
-  <meta name="description" content="Favourites — Your saved shers from Kalp Shayari by Zeeshan Khan. The ones that stayed with you.">
-  <meta name="keywords" content="favourites, saved shayari, kalp shayari, zeeshan khan, liked shers, poetry collection">
+  <meta name="description" content="Favourites — Your saved shers from Kalp Shayari by Zeeshan Khan.">
   <meta name="author" content="Zeeshan Khan">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:site_name" content="Kalp Shayari">
   <meta property="og:title" content="Favourites — Kalp Shayari">
@@ -16,8 +15,6 @@
   <meta property="og:url" content="https://kalpshayari.vercel.app/fav.html">
   <meta property="og:image" content="https://kalpshayari.vercel.app/shayari.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Favourites — Kalp Shayari">
-  <meta name="twitter:description" content="Your saved shers from Kalp Shayari.">
   <link rel="canonical" href="https://kalpshayari.vercel.app/fav.html">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="shayari.png">
@@ -109,20 +106,14 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
+  <script src="data.js"></script>
+  <script src="storage.js"></script>
   <script>
     (function () {
       'use strict';
 
-      const SHAYARI = [
-        { id: 's01', rank: 'gold', tag: 'Gold', text: 'Aine me khudko dekho,\ngulab nazar aye.\nTumhara naam likhu,\nto najane kyu sharab nazar aaye.', em: 'sharab nazar aaye' },
-        { id: 's02', rank: 'silver', tag: 'Silver', text: 'Dil ke darwaze par dastak di,\nab dastak jaha di he,\nwaha dil hi nahi milta.', em: 'waha dil hi nahi milta' },
-        { id: 's03', rank: 'platinum', tag: 'Platinum', text: 'Kahti he tujh garib ko,\nmeri gali ka rasta kya pata.\nKambakht teri gali guzar guzar ke,\nhi garib hua hu.', em: 'hi garib hua hu' },
-        { id: 's04', rank: 'gold', tag: 'Gold', text: 'Unki akho ki gehraiyo me,\nmera dil kho chuka he.\nAb ye dil unka,\npar unka kisi aur ka ho chuka he.', em: 'kisi aur ka ho chuka he' },
-        { id: 's05', rank: 'silver', tag: 'Silver', text: 'Haqeeqat ne hade par kardi he,\nkhwab di.\nTumhe dekhke hamne bhi pi li,\nakhkhi bottle sharab di.', em: 'akhkhi bottle sharab di' },
-        { id: 's06', rank: 'platinum', tag: 'Platinum', text: 'Duniya me aye ho,\naur kahte ho me mohabbat se,\napna dil nahi sita.\nAre mekhane me khade ho,\naur kahte ho me sharab nahi pita.', em: 'me sharab nahi pita' },
-        { id: 's07', rank: 'gold', tag: 'Gold', text: 'Tumhare hatho me mahandi dekhu,\nto rang surkh lal nazar aata he.\nTumhari aakho me jab chand dekhu,\nto chand me chand nazar aata he.', em: 'chand me chand nazar aata he' },
-        { id: 's08', rank: 'silver', tag: 'Silver', text: 'Tumse akhe milau to,\nhar baat bhul jata hu.\nTumhare hath ka bana khana khau,\nto bakiyo ka swad bhul jata hu.', em: 'bakiyo ka swad bhul jata hu' }
-      ];
+      const DATA = window.KALP_DATA;
+      const SHAYARI = DATA.SHAYARI;
 
       const $ = (sel, ctx) => (ctx || document).querySelector(sel);
 
@@ -138,16 +129,15 @@
         return safe.replace(safeEm, '<span class="card-em">' + safeEm + '</span>');
       }
 
-      const liked = new Set(
-        (function () {
-          try {
-            const raw = localStorage.getItem('kalp.liked');
-            return raw ? JSON.parse(raw) : [];
-          } catch (e) {
-            return [];
-          }
-        })()
-      );
+      function sizeClass(text) {
+        const lines = text.split('\n').length;
+        const chars = text.replace(/\n/g, '').length;
+        if (lines <= 3 && chars <= 90) return 'is-short';
+        if (lines >= 5 || chars >= 180) return 'is-long';
+        return 'is-med';
+      }
+
+      const liked = window.KalpStore.asSet();
 
       const gridEl = $('#grid');
       const favEmpty = $('#favEmpty');
@@ -167,9 +157,7 @@
       }
 
       function persistLikes() {
-        try {
-          localStorage.setItem('kalp.liked', JSON.stringify(Array.from(liked)));
-        } catch (e) { void e; }
+        window.KalpStore.setLiked(Array.from(liked));
       }
 
       let menuOpen = false;
@@ -233,8 +221,7 @@
       });
 
       function copySher(item, btn) {
-        const plain = item.text.replace(/<[^>]*>/g, '');
-        const output = plain + '\n\n— Zeeshan Khan';
+        const output = item.text + '\n\n— Zeeshan Khan';
 
         const fallback = () => {
           try {
@@ -254,9 +241,7 @@
           btn.classList.remove('is-copying');
           btn.classList.add('is-copied');
           toast('Sher copied');
-          setTimeout(() => {
-            btn.classList.remove('is-copied');
-          }, 1600);
+          setTimeout(() => btn.classList.remove('is-copied'), 1600);
         };
 
         btn.classList.add('is-copying');
@@ -280,8 +265,8 @@
           '<svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
             '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
           '</svg>' +
-          '<svg class="icon-heart-fill" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
+          '<svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<polyline points="4 12 10 18 20 6"/>' +
           '</svg>' +
         '</button>';
       }
@@ -301,7 +286,7 @@
 
         list.forEach((item, i) => {
           const card = document.createElement('article');
-          card.className = 'card';
+          card.className = 'card ' + sizeClass(item.text);
           card.dataset.id = item.id;
           card.style.animationDelay = Math.min(i * 0.06, 0.4) + 's';
 
@@ -326,16 +311,14 @@
               '</div>' +
             '</div>';
 
-          const likeBtn = card.querySelector('.like');
-          likeBtn.addEventListener('click', (e) => {
+          card.querySelector('.like').addEventListener('click', (e) => {
             e.stopPropagation();
-            handleUnlike(item, card, likeBtn);
+            handleUnlike(item, card, card.querySelector('.like'));
           });
 
-          const copyBtn = card.querySelector('.copy');
-          copyBtn.addEventListener('click', (e) => {
+          card.querySelector('.copy').addEventListener('click', (e) => {
             e.stopPropagation();
-            copySher(item, copyBtn);
+            copySher(item, card.querySelector('.copy'));
           });
 
           fragment.appendChild(card);
@@ -345,30 +328,25 @@
       }
 
       function handleUnlike(item, card, btn) {
+        // Trigger animation (ring + tick)
         btn.classList.remove('is-animating');
         void btn.offsetWidth;
         btn.classList.add('is-animating');
 
+        // Keep visual as liked briefly so ring/tick plays before removal
         liked.delete(item.id);
         persistLikes();
-        toast('Removed from favourites');
 
-        // Animate the card out
-        card.style.transition = 'opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)';
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(10px) scale(0.98)';
+        setTimeout(() => {
+          toast('Removed from favourites');
+          card.style.transition = 'opacity 0.4s cubic-bezier(0.22,1,0.36,1), transform 0.4s cubic-bezier(0.22,1,0.36,1)';
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(10px) scale(0.98)';
+        }, 750);
 
         setTimeout(() => {
           renderFavs();
-          checkEmptyAfterDelay();
-        }, 420);
-      }
-
-      function checkEmptyAfterDelay() {
-        const remaining = SHAYARI.filter((s) => liked.has(s.id));
-        if (remaining.length === 0) {
-          favEmpty.hidden = false;
-        }
+        }, 1180);
       }
 
       yearEl.textContent = new Date().getFullYear();

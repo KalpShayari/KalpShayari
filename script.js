@@ -144,6 +144,7 @@
   const menuBtn = $('#menuBtn');
   const menuPanel = $('#menuPanel');
   const menuBackdrop = $('#menuBackdrop');
+  const toTop = $('#toTop');
 
   /* ---------- TOAST ---------- */
   let toastTimer = null;
@@ -192,16 +193,37 @@
     }, 500);
   }
 
-  function toggleMenu() {
-    if (menuOpen) closeMenu();
-    else openMenu();
-  }
-
-  menuBtn.addEventListener('click', toggleMenu);
+  menuBtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
   menuBackdrop.addEventListener('click', closeMenu);
-
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && menuOpen) closeMenu();
+  });
+
+  /* ---------- BACK TO TOP ---------- */
+  let toTopVisible = false;
+  const SCROLL_THRESHOLD = 400;
+
+  function checkScroll() {
+    const shouldShow = window.scrollY > SCROLL_THRESHOLD;
+    if (shouldShow !== toTopVisible) {
+      toTopVisible = shouldShow;
+      toTop.classList.toggle('is-on', shouldShow);
+    }
+  }
+
+  let scrollTicking = false;
+  window.addEventListener('scroll', () => {
+    if (!scrollTicking) {
+      scrollTicking = true;
+      requestAnimationFrame(() => {
+        checkScroll();
+        scrollTicking = false;
+      });
+    }
+  }, { passive: true });
+
+  toTop.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
   /* ---------- RENDER FILTERS ---------- */
@@ -296,42 +318,59 @@
     yearEl.textContent = new Date().getFullYear();
     renderFilters();
     renderGrid();
+    checkScroll();
 
     /* ---------- SEO: JSON-LD STRUCTURED DATA ---------- */
     const ld = {
       '@context': 'https://schema.org',
-      '@type': 'CollectionPage',
-      name: 'Kalp Shayari — Words That Stay',
-      description:
-        'Original shers written by Zeeshan Khan. A quiet collection on love, life, loss, and friendship.',
-      url: 'https://kalpshayari.vercel.app/',
-      inLanguage: 'en',
-      author: {
-        '@type': 'Person',
-        name: 'Zeeshan Khan',
-        alternateName: 'Zeeshan40u',
-        email: 'zeeshan40u@gmail.com',
-        url: 'https://relaytalk.vercel.app/@Zeeshan40u'
-      },
-      mainEntity: {
-        '@type': 'ItemList',
-        numberOfItems: SHAYARI.length,
-        itemListElement: SHAYARI.map((s, i) => ({
-          '@type': 'ListItem',
-          position: i + 1,
-          item: {
-            '@type': 'CreativeWork',
-            name: 'Sher ' + (i + 1),
-            text: s.text.replace(/\n/g, ' '),
-            genre: 'Poetry',
-            keywords: s.tag,
-            author: {
-              '@type': 'Person',
-              name: 'Zeeshan Khan'
-            }
+      '@graph': [
+        {
+          '@type': 'WebSite',
+          '@id': 'https://kalpshayari.vercel.app/#website',
+          url: 'https://kalpshayari.vercel.app/',
+          name: 'Kalp Shayari',
+          description: 'Original shers written by Zeeshan Khan.',
+          inLanguage: 'en',
+          publisher: { '@id': 'https://kalpshayari.vercel.app/#person' }
+        },
+        {
+          '@type': 'Person',
+          '@id': 'https://kalpshayari.vercel.app/#person',
+          name: 'Zeeshan Khan',
+          alternateName: 'Zeeshan40u',
+          email: 'zeeshan40u@gmail.com',
+          url: 'https://relaytalk.vercel.app',
+          jobTitle: 'Writer & Poet',
+          knowsAbout: ['Shayari', 'Poetry', 'Urdu Literature', 'Hindi Literature']
+        },
+        {
+          '@type': 'CollectionPage',
+          '@id': 'https://kalpshayari.vercel.app/#collection',
+          url: 'https://kalpshayari.vercel.app/',
+          name: 'Kalp Shayari — Words That Stay',
+          description: 'Original shers written by Zeeshan Khan. A quiet collection on love, life, loss, and friendship.',
+          inLanguage: 'en',
+          isPartOf: { '@id': 'https://kalpshayari.vercel.app/#website' },
+          author: { '@id': 'https://kalpshayari.vercel.app/#person' },
+          mainEntity: {
+            '@type': 'ItemList',
+            numberOfItems: SHAYARI.length,
+            itemListElement: SHAYARI.map((s, i) => ({
+              '@type': 'ListItem',
+              position: i + 1,
+              item: {
+                '@type': 'CreativeWork',
+                name: 'Sher ' + (i + 1),
+                text: s.text.replace(/\n/g, ' '),
+                genre: 'Poetry',
+                keywords: s.tag,
+                inLanguage: 'en',
+                author: { '@id': 'https://kalpshayari.vercel.app/#person' }
+              }
+            }))
           }
-        }))
-      }
+        }
+      ]
     };
 
     const tag = document.createElement('script');

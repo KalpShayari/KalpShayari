@@ -1,0 +1,417 @@
+/* ------------------------------------------------------------------
+   Kalp Shayari — style.css
+   Clean. White. Calm. No gradients. Real typography.
+------------------------------------------------------------------ */
+
+:root {
+  --ink: #111111;
+  --ink-soft: #4a4a4a;
+  --ink-mute: #8a8a8a;
+  --line: #e8e8e8;
+  --line-strong: #d4d4d4;
+  --paper: #ffffff;
+  --paper-soft: #fafafa;
+  --accent: #b8860b;
+  --accent-soft: #f6f1e4;
+  --radius: 2px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--ink);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.wrap {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* ---------- HEADER ---------- */
+.site-head {
+  padding: 72px 0 44px;
+  border-bottom: 1px solid var(--line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  animation: rise 0.9s var(--ease-out) both;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: 'Tiro Devanagari Hindi', 'Playfair Display', serif;
+  font-size: 28px;
+  line-height: 1;
+  border-radius: var(--radius);
+  transition: transform 0.6s var(--ease), border-radius 0.6s var(--ease);
+  flex-shrink: 0;
+}
+
+.brand:hover .brand-mark {
+  transform: rotate(-6deg);
+  border-radius: 50%;
+}
+
+.brand-name {
+  font-family: 'Playfair Display', 'Tiro Devanagari Hindi', Georgia, serif;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+}
+
+.brand-tag {
+  font-size: 0.8rem;
+  font-weight: 400;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 14px;
+  padding-left: 64px;
+  animation: rise 0.9s 0.12s var(--ease-out) both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- FILTERS ---------- */
+.filters {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(12px);
+  -webkit-backdrop-filter: saturate(180%) blur(12px);
+  z-index: 20;
+}
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.filter-btn {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  padding: 8px 16px;
+  border-radius: 100px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+.filter-btn::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 0;
+  height: 1px;
+  background: currentColor;
+  transform: translateX(-50%);
+  transition: width 0.4s var(--ease);
+}
+
+.filter-btn:hover {
+  color: var(--ink);
+  background: var(--paper-soft);
+}
+
+.filter-btn:hover::after {
+  width: 40%;
+}
+
+.filter-btn.is-active {
+  color: var(--paper);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.filter-btn.is-active::after {
+  display: none;
+}
+
+/* ---------- GRID ---------- */
+.content {
+  flex: 1;
+  padding: 48px 0 96px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+/* ---------- CARD ---------- */
+.card {
+  background: var(--paper);
+  padding: 40px 32px 32px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 260px;
+  transition: background 0.5s var(--ease);
+  animation: cardIn 0.7s var(--ease-out) both;
+  will-change: transform;
+}
+
+.card:hover {
+  background: var(--paper-soft);
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-index {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-mute);
+  letter-spacing: 0.1em;
+  transition: color 0.4s var(--ease), transform 0.6s var(--ease);
+}
+
+.card:hover .card-index {
+  color: var(--accent);
+  transform: translateY(-2px);
+}
+
+.card-body {
+  flex: 1;
+  font-family: 'Tiro Devanagari Hindi', 'Playfair Display', Georgia, serif;
+  font-size: 1.22rem;
+  line-height: 1.95;
+  color: var(--ink);
+  white-space: pre-line;
+  letter-spacing: 0.005em;
+  transition: transform 0.6s var(--ease);
+}
+
+.card:hover .card-body {
+  transform: translateY(-2px);
+}
+
+.card-em {
+  font-style: italic;
+  color: var(--accent);
+  position: relative;
+}
+
+.card-foot {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.card-tag {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  transition: color 0.4s var(--ease);
+}
+
+.card:hover .card-tag {
+  color: var(--ink-soft);
+}
+
+.like {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  font-size: 0.9rem;
+  line-height: 1;
+  transition: all 0.35s var(--ease);
+}
+
+.like:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+  transform: scale(1.08);
+}
+
+.like:active {
+  transform: scale(0.94);
+}
+
+.like.is-liked {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.like.is-liked .heart {
+  animation: pop 0.45s var(--ease);
+}
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* subtle corner accent on hover */
+.card::before,
+.card::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-color: var(--ink);
+  border-style: solid;
+  transition: width 0.4s var(--ease), height 0.4s var(--ease), opacity 0.4s var(--ease);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.card::before {
+  top: 0; left: 0;
+  border-width: 1px 0 0 1px;
+}
+
+.card::after {
+  bottom: 0; right: 0;
+  border-width: 0 1px 1px 0;
+}
+
+.card:hover::before,
+.card:hover::after {
+  width: 18px;
+  height: 18px;
+  opacity: 1;
+}
+
+/* ---------- EMPTY ---------- */
+.empty {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--ink-mute);
+  font-size: 0.95rem;
+}
+
+/* ---------- FOOTER ---------- */
+.site-foot {
+  border-top: 1px solid var(--line);
+  padding: 32px 0;
+}
+
+.site-foot p {
+  font-size: 0.82rem;
+  color: var(--ink-mute);
+  letter-spacing: 0.02em;
+}
+
+/* ---------- TOAST ---------- */
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 32px;
+  transform: translate(-50%, 24px);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 11px 22px;
+  border-radius: 100px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
+  z-index: 100;
+}
+
+.toast.is-on {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 720px) {
+  .wrap { padding: 0 18px; }
+  .site-head { padding: 52px 0 32px; }
+  .brand-tag { padding-left: 0; margin-top: 12px; }
+  .brand-mark { width: 42px; height: 42px; font-size: 24px; }
+  .grid { grid-template-columns: 1fr; }
+  .card { padding: 32px 24px 26px; }
+  .card-body { font-size: 1.12rem; line-height: 1.9; }
+  .content { padding: 32px 0 64px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

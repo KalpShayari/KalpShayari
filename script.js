@@ -1,109 +1,109 @@
 /* ------------------------------------------------------------------
    Kalp Shayari — script.js
-   All shayari lives here. Render, filter, like, enjoy.
+   Original shers by Zeeshan Khan. Render, filter, like, enjoy.
 ------------------------------------------------------------------ */
 
 (function () {
   'use strict';
 
-  /* ---------- DATA ---------- */
+  /* ---------- DATA — All shers written by Zeeshan Khan ---------- */
   const SHAYARI = [
     {
       id: 's01',
-      rank: 'classic',
-      tag: 'Classic',
+      rank: 'gold',
+      tag: 'Gold',
       text: 'In your eyes I found a madness,\nthe kind no wine could ever give.\nEvery moment spent beside you,\nwas a heaven I got to live.',
       em: 'a heaven I got to live'
     },
     {
       id: 's02',
-      rank: 'rare',
-      tag: 'Rare',
+      rank: 'platinum',
+      tag: 'Platinum',
       text: 'When the heart broke, it made no sound,\nonly silence said it all.\nThe ones who laugh the loudest,\nare the ones who quietly fall.',
       em: 'only silence said it all'
     },
     {
       id: 's03',
-      rank: 'timeless',
-      tag: 'Timeless',
+      rank: 'silver',
+      tag: 'Silver',
       text: 'Life is just a book of pages,\nevery leaf a lesson learned.\nWhoever reads with open eyes,\nwill never feel alone or burned.',
       em: 'every leaf a lesson learned'
     },
     {
       id: 's04',
-      rank: 'classic',
-      tag: 'Classic',
+      rank: 'bronze',
+      tag: 'Bronze',
       text: 'In friendship there is no distance,\nno reason and no bound.\nThe one who stands through every storm,\nis the truest friend I have found.',
       em: 'the truest friend I have found'
     },
     {
       id: 's05',
-      rank: 'rare',
-      tag: 'Rare',
+      rank: 'gold',
+      tag: 'Gold',
       text: 'What love gives you in return,\nno other place can ever hold.\nWalking with your hand in mine,\nfeels like I have won the world.',
       em: 'won the world'
     },
     {
       id: 's06',
-      rank: 'timeless',
-      tag: 'Timeless',
+      rank: 'platinum',
+      tag: 'Platinum',
       text: 'In the silence of the night,\nyour memories come to me.\nSleep arrives but peace does not,\nthe heart still longs to be free.',
       em: 'your memories come to me'
     },
     {
       id: 's07',
-      rank: 'rare',
-      tag: 'Rare',
+      rank: 'silver',
+      tag: 'Silver',
       text: 'After every hardship comes\na morning bright and new.\nJust keep your courage close,\nevery moment turns gold for you.',
       em: 'every moment turns gold'
     },
     {
       id: 's08',
-      rank: 'classic',
-      tag: 'Classic',
+      rank: 'bronze',
+      tag: 'Bronze',
       text: 'What is a friend who is not there\nwhen laughter fills the air?\nThe one who stands beside your tears,\nis the truest soul you will find.',
       em: 'the truest soul you will find'
     },
     {
       id: 's09',
-      rank: 'timeless',
-      tag: 'Timeless',
+      rank: 'gold',
+      tag: 'Gold',
       text: 'Without you this heart is\nlike a courtyard left alone.\nWhen you return it feels\nlike I have finally found home.',
       em: 'finally found home'
     },
     {
       id: 's10',
-      rank: 'rare',
-      tag: 'Rare',
+      rank: 'platinum',
+      tag: 'Platinum',
       text: 'I learned to smile through the pain,\nhiding grief became an art.\nWhat stays inside and never speaks,\nis the heaviest thing in the heart.',
       em: 'the heaviest thing in the heart'
     },
     {
       id: 's11',
-      rank: 'classic',
-      tag: 'Classic',
+      rank: 'silver',
+      tag: 'Silver',
       text: 'The road did not lead to the end,\nbut that is quite alright.\nWhat the journey taught me on the way,\nno book could ever write.',
       em: 'no book could ever write'
     },
     {
       id: 's12',
-      rank: 'timeless',
-      tag: 'Timeless',
+      rank: 'bronze',
+      tag: 'Bronze',
       text: 'A friend is not the one who stays\nbeside you every hour.\nA friend is one who lives inside\nyour heart with all its power.',
       em: 'lives inside your heart'
     }
   ];
 
   const RANKS = [
-    { key: 'all', label: 'All Ranks' },
-    { key: 'classic', label: 'Classic' },
-    { key: 'rare', label: 'Rare' },
-    { key: 'timeless', label: 'Timeless' }
+    { key: 'all', label: 'All' },
+    { key: 'gold', label: 'Gold' },
+    { key: 'silver', label: 'Silver' },
+    { key: 'bronze', label: 'Bronze' },
+    { key: 'platinum', label: 'Platinum' }
   ];
 
   /* ---------- HELPERS ---------- */
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
-  const $$ = (sel, ctx) => Array.prototype.slice.call((ctx || document).querySelectorAll(sel));
 
   const escapeHTML = (str) =>
     str.replace(/[&<>"']/g, (c) => ({
@@ -238,10 +238,12 @@
     }
     emptyEl.hidden = true;
 
+    const fragment = document.createDocumentFragment();
+
     list.forEach((item, i) => {
       const card = document.createElement('article');
       card.className = 'card';
-      card.style.animationDelay = (i * 0.05) + 's';
+      card.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
       card.dataset.id = item.id;
 
       const indexLabel = String(SHAYARI.indexOf(item) + 1).padStart(2, '0');
@@ -251,7 +253,7 @@
         '<span class="card-index">' + indexLabel + '</span>' +
         '<div class="card-body">' + renderText(item.text, item.em) + '</div>' +
         '<div class="card-foot">' +
-          '<span class="card-tag">' + escapeHTML(item.tag) + '</span>' +
+          '<span class="card-rank rank-' + item.rank + '">' + escapeHTML(item.tag) + '</span>' +
           '<button class="like' + (isLiked ? ' is-liked' : '') + '" type="button" ' +
             'aria-label="Like this shayari" aria-pressed="' + isLiked + '">' +
             '<span class="heart">' + (isLiked ? '♥' : '♡') + '</span>' +
@@ -264,8 +266,10 @@
         toggleLike(item, likeBtn);
       });
 
-      gridEl.appendChild(card);
+      fragment.appendChild(card);
     });
+
+    gridEl.appendChild(fragment);
   }
 
   /* ---------- LIKE ---------- */
@@ -299,9 +303,16 @@
       '@type': 'CollectionPage',
       name: 'Kalp Shayari — Words That Stay',
       description:
-        'A handpicked collection of English shayari on love, life, loss, and friendship.',
-      url: 'https://kalpshayari.com/',
+        'Original shers written by Zeeshan Khan. A quiet collection on love, life, loss, and friendship.',
+      url: 'https://kalpshayari.vercel.app/',
       inLanguage: 'en',
+      author: {
+        '@type': 'Person',
+        name: 'Zeeshan Khan',
+        alternateName: 'Zeeshan40u',
+        email: 'zeeshan40u@gmail.com',
+        url: 'https://relaytalk.vercel.app/@Zeeshan40u'
+      },
       mainEntity: {
         '@type': 'ItemList',
         numberOfItems: SHAYARI.length,
@@ -310,10 +321,14 @@
           position: i + 1,
           item: {
             '@type': 'CreativeWork',
-            name: 'Shayari ' + (i + 1),
+            name: 'Sher ' + (i + 1),
             text: s.text.replace(/\n/g, ' '),
             genre: 'Poetry',
-            keywords: s.tag
+            keywords: s.tag,
+            author: {
+              '@type': 'Person',
+              name: 'Zeeshan Khan'
+            }
           }
         }))
       }

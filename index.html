@@ -4,34 +4,55 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Kalp Shayari — Original shers written by Zeeshan Khan. A quiet collection of verses on love, life, loss, and friendship.">
-  <meta name="keywords" content="kalp shayari, zeeshan khan, original shayari, english shayari, love shayari, sad shayari, life shayari, friendship shayari, poetry collection, shers">
+  <meta name="keywords" content="kalp shayari, zeeshan khan, original shayari, english shayari, love shayari, sad shayari, life shayari, friendship shayari, poetry collection, shers, zeeshan40u">
   <meta name="author" content="Zeeshan Khan">
-  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="googlebot" content="index, follow">
   <meta name="theme-color" content="#ffffff">
+  <meta name="format-detection" content="telephone=no">
+  <meta property="og:site_name" content="Kalp Shayari">
   <meta property="og:title" content="Kalp Shayari — Words That Stay">
   <meta property="og:description" content="Original shers by Zeeshan Khan. A quiet collection for the moments that matter.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kalpshayari.vercel.app/">
   <meta property="og:image" content="https://kalpshayari.vercel.app/shayari.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Kalp Shayari — Words That Stay">
   <meta name="twitter:description" content="Original shers by Zeeshan Khan. A quiet collection for the moments that matter.">
+  <meta name="twitter:image" content="https://kalpshayari.vercel.app/shayari.png">
   <link rel="canonical" href="https://kalpshayari.vercel.app/">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="shayari.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
-  <title>Kalp Shayari — Words That Stay</title>
+  <title>Kalp Shayari — Original Shers by Zeeshan Khan</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ---------- MENU ---------- -->
-  <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
-    <span class="menu-line"></span>
-    <span class="menu-line"></span>
-  </button>
+  <!-- ---------- HEADER (with inline menu) ---------- -->
+  <header class="site-head">
+    <div class="wrap">
+      <div class="head-row">
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </button>
+        <a href="index.html" class="brand">
+          <img src="shayari.png" alt="Kalp Shayari" class="brand-logo" width="44" height="44">
+          <h1 class="brand-name">Kalp Shayari</h1>
+        </a>
+      </div>
+      <p class="brand-tag">original shers, quietly kept</p>
+    </div>
+  </header>
 
+  <!-- ---------- MENU PANEL ---------- -->
   <div class="menu-backdrop" id="menuBackdrop" hidden></div>
 
   <aside class="menu-panel" id="menuPanel" aria-hidden="true">
@@ -49,17 +70,6 @@
       <span class="menu-sign">— Zeeshan Khan</span>
     </div>
   </aside>
-
-  <!-- ---------- HEADER ---------- -->
-  <header class="site-head">
-    <div class="wrap">
-      <div class="brand">
-        <img src="shayari.png" alt="Kalp Shayari" class="brand-logo" width="52" height="52">
-        <h1 class="brand-name">Kalp Shayari</h1>
-      </div>
-      <p class="brand-tag">original shers, quietly kept</p>
-    </div>
-  </header>
 
   <!-- ---------- FILTERS ---------- -->
   <nav class="filters" aria-label="Shayari ranks">
@@ -82,6 +92,13 @@
       <p>© <span id="year"></span> Kalp Shayari · Written by Zeeshan Khan</p>
     </div>
   </footer>
+
+  <!-- ---------- BACK TO TOP ---------- -->
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 

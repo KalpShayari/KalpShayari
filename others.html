@@ -4,20 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="y2KUdk5NLGrxUgulLoxvA0a2y3jQlVPObdNtYkIef2U" />
-  <meta name="description" content="Nazm & Others — Longer poems and nazms by Zeeshan Khan. Quiet verses that unfold slowly, kept honestly.">
-  <meta name="keywords" content="nazm, nazms, kalp shayari, zeeshan khan, urdu nazm, hindi nazm, poetry, aankhon ka aaina, postman nazm">
+  <meta name="description" content="Nazm & Others — Longer poems and nazms by Zeeshan Khan.">
+  <meta name="keywords" content="nazm, nazms, kalp shayari, zeeshan khan, poetry, aankhon ka aaina, postman nazm">
   <meta name="author" content="Zeeshan Khan">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta name="theme-color" content="#ffffff">
   <meta property="og:site_name" content="Kalp Shayari">
   <meta property="og:title" content="Nazm & Others — Kalp Shayari">
-  <meta property="og:description" content="Longer nazms by Zeeshan Khan. Verses that unfold slowly.">
+  <meta property="og:description" content="Longer nazms by Zeeshan Khan.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kalpshayari.vercel.app/others.html">
   <meta property="og:image" content="https://kalpshayari.vercel.app/shayari.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Nazm & Others — Kalp Shayari">
-  <meta name="twitter:description" content="Longer nazms by Zeeshan Khan.">
   <link rel="canonical" href="https://kalpshayari.vercel.app/others.html">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="shayari.png">
@@ -77,7 +75,6 @@
         <h2 class="page-title">Nazm &amp; Others</h2>
         <p class="page-sub">longer verses, unfolding slowly</p>
       </header>
-
       <div class="nazm-grid" id="nazmGrid"></div>
     </div>
   </main>
@@ -94,64 +91,18 @@
     </svg>
   </button>
 
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
+  <script src="data.js"></script>
+  <script src="storage.js"></script>
   <script>
     (function () {
       'use strict';
 
-      const NAZM = [
-        {
-          id: 'n01',
-          title: 'Aankhon Ka Aaina',
-          subtitle: 'Nazm',
-          lines: [
-            'Maine tumhe dekha,',
-            'Tumhari aankhon mein dekha,',
-            'Tumhari aankhon mein khudko dekha,',
-            'Khudko dekha, khudki aankhon mein dekha,',
-            'Khudki aankhon mein maine tumhe dekha.'
-          ]
-        },
-        {
-          id: 'n02',
-          title: 'Postman',
-          subtitle: 'Nazm',
-          stanzas: [
-            [
-              'Ek din humare haath se, unko ek payaam aaya,',
-              'Tha woh dil ka sauda, jo unke naam aaya.'
-            ],
-            [
-              'Likhna tha usme "mohabbat karta hoon main tumse bahut",',
-              'Tabhi unka bhi ek jawab aaya.'
-            ],
-            [
-              'Darwaze pe di dastak aur postman ka salaam aaya,',
-              'Khat mein likha tha pata, aur woh mujhse milne jagah-e-viraan aaya.'
-            ],
-            [
-              'Idhar hum, aur udhar woh, chaar-paanch log saath laaya,',
-              'Hum samjhe rishte ke liye aaye honge,',
-              'Hamari aur se mohabbat ka izhaar aaya.'
-            ],
-            [
-              'Unhone hamein khoob peeta, jab ghar pahunche to pata chala,',
-              'Postman parcel kisi aur ke ghar se laaya.'
-            ]
-          ]
-        }
-      ];
-
+      const NAZM = window.KALP_DATA.NAZM;
       const $ = (sel, ctx) => (ctx || document).querySelector(sel);
 
       const escapeHTML = (str) =>
         str.replace(/[&<>"']/g, (c) => ({
-          '&': '&amp;',
-          '<': '&lt;',
-          '>': '&gt;',
-          '"': '&quot;',
-          "'": '&#39;'
+          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
         }[c]));
 
       const yearEl = $('#year');

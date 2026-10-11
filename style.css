@@ -81,17 +81,23 @@ body {
   color: inherit;
 }
 
+/* ---------- LOGO AS CIRCLE ---------- */
 .brand-logo {
   display: block;
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  padding: 3px;
+  background: var(--paper);
   flex-shrink: 0;
-  transition: transform 0.7s var(--ease-bounce);
+  transition: transform 0.7s var(--ease-bounce), border-color 0.4s var(--ease);
 }
 
 .brand:hover .brand-logo {
   transform: rotate(-8deg) scale(1.06);
+  border-color: var(--ink);
 }
 
 .brand-name {
@@ -560,17 +566,19 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* ---------- BACK TO TOP ---------- */
+/* ---------- BACK TO TOP (with outline) ---------- */
 .to-top {
   position: fixed;
   right: 24px;
   bottom: 24px;
   z-index: 30;
   appearance: none;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
-  border: 1px solid var(--line-strong);
+  border: 1.5px solid var(--ink);
+  outline: 2px solid var(--paper);
+  outline-offset: -4px;
   background: var(--paper);
   color: var(--ink);
   cursor: pointer;
@@ -582,7 +590,8 @@ body {
   transform: translateY(16px);
   transition: opacity 0.4s var(--ease), transform 0.5s var(--ease-bounce),
               visibility 0.4s var(--ease), border-color 0.4s var(--ease),
-              box-shadow 0.4s var(--ease), background 0.4s var(--ease);
+              box-shadow 0.4s var(--ease), background 0.4s var(--ease),
+              outline-color 0.4s var(--ease);
   box-shadow: 0 2px 12px rgba(17, 17, 17, 0.06);
 }
 
@@ -593,15 +602,20 @@ body {
 }
 
 .to-top:hover {
-  border-color: var(--ink);
   background: var(--ink);
   color: var(--paper);
+  outline-color: var(--ink);
   transform: translateY(-3px) scale(1.05);
   box-shadow: 0 10px 24px rgba(17, 17, 17, 0.16);
 }
 
 .to-top:active {
   transform: translateY(-1px) scale(0.96);
+}
+
+.to-top:focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 4px;
 }
 
 /* ---------- TOAST ---------- */
@@ -635,9 +649,9 @@ body {
   .head-row { gap: 14px; }
   .menu-btn { width: 40px; height: 40px; }
   .menu-line { width: 14px; }
-  .brand-logo { width: 38px; height: 38px; }
+  .brand-logo { width: 40px; height: 40px; }
   .brand-name { font-size: 1.5rem; }
-  .brand-tag { padding-left: 52px; font-size: 0.68rem; letter-spacing: 0.22em; }
+  .brand-tag { padding-left: 54px; font-size: 0.68rem; letter-spacing: 0.22em; }
   .menu-panel { padding: 52px 24px 24px; }
   .menu-text { font-size: 1.2rem; }
   .grid { grid-template-columns: 1fr; }
@@ -645,7 +659,7 @@ body {
   .card-body { font-size: 1.12rem; line-height: 1.9; }
   .content { padding: 32px 0 64px; }
   .filter-btn { font-size: 0.75rem; padding: 6px 12px; }
-  .to-top { right: 18px; bottom: 18px; width: 40px; height: 40px; }
+  .to-top { right: 18px; bottom: 18px; width: 42px; height: 42px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

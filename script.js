@@ -1,12 +1,6 @@
-/* ------------------------------------------------------------------
-   Kalp Shayari — script.js
-   Original shers by Zeeshan Khan. Render, filter, like, enjoy.
------------------------------------------------------------------- */
-
 (function () {
   'use strict';
 
-  /* ---------- DATA — All shers written by Zeeshan Khan ---------- */
   const SHAYARI = [
     {
       id: 's01',
@@ -102,7 +96,6 @@
     { key: 'platinum', label: 'Platinum' }
   ];
 
-  /* ---------- HELPERS ---------- */
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
 
   const escapeHTML = (str) =>
@@ -121,7 +114,6 @@
     return safe.replace(safeEm, '<span class="card-em">' + safeEm + '</span>');
   }
 
-  /* ---------- STATE ---------- */
   const liked = new Set(
     (function () {
       try {
@@ -135,7 +127,6 @@
 
   let activeFilter = 'all';
 
-  /* ---------- DOM REFS ---------- */
   const gridEl = $('#grid');
   const filterRow = $('#filterRow');
   const emptyEl = $('#empty');
@@ -146,7 +137,6 @@
   const menuBackdrop = $('#menuBackdrop');
   const toTop = $('#toTop');
 
-  /* ---------- TOAST ---------- */
   let toastTimer = null;
   function toast(message) {
     toastEl.textContent = message;
@@ -155,16 +145,14 @@
     toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
   }
 
-  /* ---------- PERSIST ---------- */
   function persistLikes() {
     try {
       localStorage.setItem('kalp.liked', JSON.stringify(Array.from(liked)));
     } catch (e) {
-      /* storage may be blocked — silent */
+      void e;
     }
   }
 
-  /* ---------- MENU ---------- */
   let menuOpen = false;
 
   function openMenu() {
@@ -199,7 +187,6 @@
     if (e.key === 'Escape' && menuOpen) closeMenu();
   });
 
-  /* ---------- BACK TO TOP ---------- */
   let toTopVisible = false;
   const SCROLL_THRESHOLD = 400;
 
@@ -226,7 +213,6 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 
-  /* ---------- RENDER FILTERS ---------- */
   function renderFilters() {
     filterRow.innerHTML = '';
     RANKS.forEach((rank) => {
@@ -246,7 +232,52 @@
     });
   }
 
-  /* ---------- RENDER GRID ---------- */
+  function copySher(item, btn) {
+    const plain = item.text.replace(/<[^>]*>/g, '');
+    const output = plain + '\n\n— Zeeshan Khan';
+
+    const fallback = () => {
+      try {
+        const ta = document.createElement('textarea');
+        ta.value = output;
+        ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (e) {
+        void e;
+      }
+    };
+
+    const done = () => {
+      btn.classList.remove('is-copying');
+      btn.classList.add('is-copied');
+      btn.setAttribute('aria-label', 'Copied');
+      toast('Sher copied ♥');
+      setTimeout(() => {
+        btn.classList.remove('is-copied');
+        btn.setAttribute('aria-label', 'Copy sher');
+      }, 1600);
+    };
+
+    btn.classList.add('is-copying');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(output).then(() => {
+        setTimeout(done, 550);
+      }).catch(() => {
+        fallback();
+        setTimeout(done, 550);
+      });
+    } else {
+      fallback();
+      setTimeout(done, 550);
+    }
+  }
+
   function renderGrid() {
     const list = activeFilter === 'all'
       ? SHAYARI
@@ -276,10 +307,21 @@
         '<div class="card-body">' + renderText(item.text, item.em) + '</div>' +
         '<div class="card-foot">' +
           '<span class="card-rank rank-' + item.rank + '">' + escapeHTML(item.tag) + '</span>' +
-          '<button class="like' + (isLiked ? ' is-liked' : '') + '" type="button" ' +
-            'aria-label="Like this shayari" aria-pressed="' + isLiked + '">' +
-            '<span class="heart">' + (isLiked ? '♥' : '♡') + '</span>' +
-          '</button>' +
+          '<div class="card-actions">' +
+            '<button class="copy" type="button" aria-label="Copy sher">' +
+              '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
+                '<path d="M5 15V5a2 2 0 0 1 2-2h10"/>' +
+              '</svg>' +
+              '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                '<polyline points="4 12 10 18 20 6"/>' +
+              '</svg>' +
+            '</button>' +
+            '<button class="like' + (isLiked ? ' is-liked' : '') + '" type="button" ' +
+              'aria-label="Like this shayari" aria-pressed="' + isLiked + '">' +
+              '<span class="heart">' + (isLiked ? '♥' : '♡') + '</span>' +
+            '</button>' +
+          '</div>' +
         '</div>';
 
       const likeBtn = card.querySelector('.like');
@@ -288,13 +330,18 @@
         toggleLike(item, likeBtn);
       });
 
+      const copyBtn = card.querySelector('.copy');
+      copyBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        copySher(item, copyBtn);
+      });
+
       fragment.appendChild(card);
     });
 
     gridEl.appendChild(fragment);
   }
 
-  /* ---------- LIKE ---------- */
   function toggleLike(item, btn) {
     const isLiked = liked.has(item.id);
     if (isLiked) {
@@ -313,14 +360,12 @@
     persistLikes();
   }
 
-  /* ---------- INIT ---------- */
   function init() {
     yearEl.textContent = new Date().getFullYear();
     renderFilters();
     renderGrid();
     checkScroll();
 
-    /* ---------- SEO: JSON-LD STRUCTURED DATA ---------- */
     const ld = {
       '@context': 'https://schema.org',
       '@graph': [

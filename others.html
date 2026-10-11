@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="y2KUdk5NLGrxUgulLoxvA0a2y3jQlVPObdNtYkIef2U" />
+  <meta name="description" content="Nazm & Others — Longer poems and nazms by Zeeshan Khan. Quiet verses that unfold slowly, kept honestly.">
+  <meta name="keywords" content="nazm, nazms, kalp shayari, zeeshan khan, urdu nazm, hindi nazm, poetry, aankhon ka aaina, postman nazm">
+  <meta name="author" content="Zeeshan Khan">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+  <meta name="theme-color" content="#ffffff">
+  <meta property="og:site_name" content="Kalp Shayari">
+  <meta property="og:title" content="Nazm & Others — Kalp Shayari">
+  <meta property="og:description" content="Longer nazms by Zeeshan Khan. Verses that unfold slowly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://kalpshayari.vercel.app/others.html">
+  <meta property="og:image" content="https://kalpshayari.vercel.app/shayari.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Nazm & Others — Kalp Shayari">
+  <meta name="twitter:description" content="Longer nazms by Zeeshan Khan.">
+  <link rel="canonical" href="https://kalpshayari.vercel.app/others.html">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="shayari.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+  <title>Nazm &amp; Others — Kalp Shayari</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-head">
+    <div class="wrap">
+      <div class="head-row">
+        <a href="index.html" class="brand">
+          <img src="shayari.png" alt="Kalp Shayari" class="brand-logo" width="48" height="48">
+          <h1 class="brand-name">Kalp Shayari</h1>
+        </a>
+        <button class="menu-btn" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuPanel">
+          <span class="menu-line"></span>
+          <span class="menu-line"></span>
+        </button>
+      </div>
+      <p class="brand-tag">original shers, quietly kept</p>
+    </div>
+  </header>
+
+  <div class="menu-backdrop" id="menuBackdrop" hidden></div>
+
+  <aside class="menu-panel" id="menuPanel" aria-hidden="true">
+    <nav class="menu-nav">
+      <a href="index.html" class="menu-link">
+        <span class="menu-text">Home</span>
+        <span class="menu-arrow">→</span>
+      </a>
+      <a href="others.html" class="menu-link is-active">
+        <span class="menu-text">Nazm &amp; Others</span>
+        <span class="menu-arrow">→</span>
+      </a>
+      <a href="about.html" class="menu-link">
+        <span class="menu-text">About</span>
+        <span class="menu-arrow">→</span>
+      </a>
+    </nav>
+    <div class="menu-foot">
+      <span class="menu-sign">— Zeeshan Khan</span>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="wrap">
+      <header class="page-intro">
+        <h2 class="page-title">Nazm &amp; Others</h2>
+        <p class="page-sub">longer verses, unfolding slowly</p>
+      </header>
+
+      <div class="nazm-grid" id="nazmGrid"></div>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">
+      <p>© <span id="year"></span> Kalp Shayari · Written by Zeeshan Khan</p>
+    </div>
+  </footer>
+
+  <button class="to-top" id="toTop" type="button" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V5M5 12l7-7 7 7"/>
+    </svg>
+  </button>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (function () {
+      'use strict';
+
+      const NAZM = [
+        {
+          id: 'n01',
+          title: 'Aankhon Ka Aaina',
+          subtitle: 'Nazm',
+          lines: [
+            'Maine tumhe dekha,',
+            'Tumhari aankhon mein dekha,',
+            'Tumhari aankhon mein khudko dekha,',
+            'Khudko dekha, khudki aankhon mein dekha,',
+            'Khudki aankhon mein maine tumhe dekha.'
+          ]
+        },
+        {
+          id: 'n02',
+          title: 'Postman',
+          subtitle: 'Nazm',
+          stanzas: [
+            [
+              'Ek din humare haath se, unko ek payaam aaya,',
+              'Tha woh dil ka sauda, jo unke naam aaya.'
+            ],
+            [
+              'Likhna tha usme "mohabbat karta hoon main tumse bahut",',
+              'Tabhi unka bhi ek jawab aaya.'
+            ],
+            [
+              'Darwaze pe di dastak aur postman ka salaam aaya,',
+              'Khat mein likha tha pata, aur woh mujhse milne jagah-e-viraan aaya.'
+            ],
+            [
+              'Idhar hum, aur udhar woh, chaar-paanch log saath laaya,',
+              'Hum samjhe rishte ke liye aaye honge,',
+              'Hamari aur se mohabbat ka izhaar aaya.'
+            ],
+            [
+              'Unhone hamein khoob peeta, jab ghar pahunche to pata chala,',
+              'Postman parcel kisi aur ke ghar se laaya.'
+            ]
+          ]
+        }
+      ];
+
+      const $ = (sel, ctx) => (ctx || document).querySelector(sel);
+
+      const escapeHTML = (str) =>
+        str.replace(/[&<>"']/g, (c) => ({
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#39;'
+        }[c]));
+
+      const yearEl = $('#year');
+      const menuBtn = $('#menuBtn');
+      const menuPanel = $('#menuPanel');
+      const menuBackdrop = $('#menuBackdrop');
+      const toTop = $('#toTop');
+      const toastEl = $('#toast');
+      const nazmGrid = $('#nazmGrid');
+
+      let toastTimer = null;
+      function toast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('is-on');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
+      }
+
+      yearEl.textContent = new Date().getFullYear();
+
+      let menuOpen = false;
+
+      function openMenu() {
+        menuOpen = true;
+        menuBtn.classList.add('is-open');
+        menuBtn.setAttribute('aria-expanded', 'true');
+        menuBtn.setAttribute('aria-label', 'Close menu');
+        menuPanel.classList.add('is-open');
+        menuPanel.setAttribute('aria-hidden', 'false');
+        menuBackdrop.hidden = false;
+        requestAnimationFrame(() => menuBackdrop.classList.add('is-on'));
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeMenu() {
+        menuOpen = false;
+        menuBtn.classList.remove('is-open');
+        menuBtn.setAttribute('aria-expanded', 'false');
+        menuBtn.setAttribute('aria-label', 'Open menu');
+        menuPanel.classList.remove('is-open');
+        menuPanel.setAttribute('aria-hidden', 'true');
+        menuBackdrop.classList.remove('is-on');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+          if (!menuOpen) menuBackdrop.hidden = true;
+        }, 500);
+      }
+
+      menuBtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
+      menuBackdrop.addEventListener('click', closeMenu);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menuOpen) closeMenu();
+      });
+
+      let toTopVisible = false;
+      const SCROLL_THRESHOLD = 400;
+
+      function checkScroll() {
+        const shouldShow = window.scrollY > SCROLL_THRESHOLD;
+        if (shouldShow !== toTopVisible) {
+          toTopVisible = shouldShow;
+          toTop.classList.toggle('is-on', shouldShow);
+        }
+      }
+
+      let scrollTicking = false;
+      window.addEventListener('scroll', () => {
+        if (!scrollTicking) {
+          scrollTicking = true;
+          requestAnimationFrame(() => {
+            checkScroll();
+            scrollTicking = false;
+          });
+        }
+      }, { passive: true });
+
+      toTop.addEventListener('click', () => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      });
+
+      function buildLines(lines) {
+        return lines.map((l) => '<span class="nazm-line">' + escapeHTML(l) + '</span>').join('');
+      }
+
+      function buildStanzas(stanzas) {
+        return stanzas.map((stanza) => {
+          const inner = stanza.map((l) => '<span class="nazm-line">' + escapeHTML(l) + '</span>').join('');
+          return '<div class="nazm-stanza">' + inner + '</div>';
+        }).join('');
+      }
+
+      function renderNazms() {
+        nazmGrid.innerHTML = '';
+        const fragment = document.createDocumentFragment();
+
+        NAZM.forEach((item, i) => {
+          const card = document.createElement('article');
+          card.className = 'nazm-card';
+          card.dataset.id = item.id;
+          card.style.animationDelay = Math.min(i * 0.08, 0.4) + 's';
+
+          const bodyContent = item.stanzas
+            ? buildStanzas(item.stanzas)
+            : buildLines(item.lines);
+
+          card.innerHTML =
+            '<header class="nazm-head">' +
+              '<span class="nazm-num">' + String(i + 1).padStart(2, '0') + '</span>' +
+              '<h3 class="nazm-title">' + escapeHTML(item.title) + '</h3>' +
+              '<span class="nazm-sub">' + escapeHTML(item.subtitle) + '</span>' +
+            '</header>' +
+            '<div class="nazm-body">' + bodyContent + '</div>' +
+            '<div class="nazm-foot">' +
+              '<button class="nazm-toggle" type="button" aria-expanded="false">' +
+                '<span class="nazm-toggle-text">Read full</span>' +
+                '<svg class="nazm-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                  '<polyline points="6 9 12 15 18 9"/>' +
+                '</svg>' +
+              '</button>' +
+            '</div>';
+
+          const toggleBtn = card.querySelector('.nazm-toggle');
+          const toggleText = card.querySelector('.nazm-toggle-text');
+
+          toggleBtn.addEventListener('click', () => {
+            const isExpanded = card.classList.toggle('is-expanded');
+            toggleBtn.setAttribute('aria-expanded', String(isExpanded));
+            toggleText.textContent = isExpanded ? 'Collapse' : 'Read full';
+          });
+
+          fragment.appendChild(card);
+        });
+
+        nazmGrid.appendChild(fragment);
+      }
+
+      renderNazms();
+      checkScroll();
+
+      const ld = {
+        '@context': 'https://schema.org',
+        '@graph': [
+          {
+            '@type': 'WebSite',
+            '@id': 'https://kalpshayari.vercel.app/#website',
+            url: 'https://kalpshayari.vercel.app/',
+            name: 'Kalp Shayari',
+            description: 'Original shers written by Zeeshan Khan.',
+            inLanguage: 'en',
+            publisher: { '@id': 'https://kalpshayari.vercel.app/#person' }
+          },
+          {
+            '@type': 'Person',
+            '@id': 'https://kalpshayari.vercel.app/#person',
+            name: 'Zeeshan Khan',
+            alternateName: 'Zeeshan40u',
+            email: 'zeeshan40u@gmail.com',
+            url: 'https://relaytalk.vercel.app',
+            jobTitle: 'Writer & Poet',
+            knowsAbout: ['Shayari', 'Poetry', 'Urdu Literature', 'Hindi Literature', 'Nazm']
+          },
+          {
+            '@type': 'CollectionPage',
+            '@id': 'https://kalpshayari.vercel.app/others.html#collection',
+            url: 'https://kalpshayari.vercel.app/others.html',
+            name: 'Nazm & Others — Kalp Shayari',
+            description: 'Longer nazms by Zeeshan Khan. Verses that unfold slowly.',
+            inLanguage: 'en',
+            isPartOf: { '@id': 'https://kalpshayari.vercel.app/#website' },
+            author: { '@id': 'https://kalpshayari.vercel.app/#person' }
+          }
+        ]
+      };
+
+      const tag = document.createElement('script');
+      tag.type = 'application/ld+json';
+      tag.textContent = JSON.stringify(ld);
+      document.head.appendChild(tag);
+    })();
+  </script>
+</body>
+</html>

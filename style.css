@@ -9,7 +9,6 @@
   --accent: #b8860b;
   --gold: #b8860b;
   --silver: #8a8a8a;
-  --bronze: #a0704a;
   --platinum: #6b7a8f;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -490,11 +489,6 @@ button::-moz-focus-inner {
   background: rgba(138, 138, 138, 0.06);
 }
 
-.card-rank.rank-bronze {
-  color: var(--bronze);
-  background: rgba(160, 112, 74, 0.06);
-}
-
 .card-rank.rank-platinum {
   color: var(--platinum);
   background: rgba(107, 122, 143, 0.06);
@@ -510,6 +504,7 @@ button::-moz-focus-inner {
   gap: 8px;
 }
 
+/* ---------- LIKE BUTTON (with copy-style animation) ---------- */
 .like {
   appearance: none;
   background: transparent;
@@ -522,38 +517,85 @@ button::-moz-focus-inner {
   align-items: center;
   justify-content: center;
   color: var(--ink-soft);
-  font-size: 0.9rem;
+  position: relative;
   line-height: 1;
-  transition: all 0.35s var(--ease);
+  transition: border-color 0.35s var(--ease), color 0.35s var(--ease),
+              background 0.35s var(--ease);
 }
 
 .like:hover {
   border-color: var(--ink);
   color: var(--ink);
-  transform: scale(1.08);
 }
 
-.like:active {
-  transform: scale(0.94);
+.like svg {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
+}
+
+.like .icon-heart-outline {
+  transform: translate(-50%, -50%);
+  opacity: 1;
+}
+
+.like .icon-heart-fill {
+  transform: translate(-50%, -50%) scale(0.6);
+  opacity: 0;
 }
 
 .like.is-liked {
-  background: var(--ink);
   border-color: var(--ink);
   color: var(--paper);
+  background: var(--ink);
 }
 
-.like.is-liked .heart {
-  animation: pop 0.45s var(--ease);
+.like.is-liked .icon-heart-outline {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4);
 }
 
-@keyframes pop {
-  0%   { transform: scale(1); }
-  40%  { transform: scale(1.35); }
-  70%  { transform: scale(0.9); }
-  100% { transform: scale(1); }
+.like.is-liked .icon-heart-fill {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
+/* Rotating ring — same as copy */
+.like::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--ink);
+  opacity: 0;
+  transform: rotate(0deg);
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+
+.like.is-animating::before {
+  opacity: 1;
+  animation: circleSpin 0.7s linear infinite;
+}
+
+/* Pop on the heart itself */
+.like.is-animating .icon-heart-fill,
+.like.is-animating .icon-heart-outline {
+  animation: heartPop 0.7s var(--ease-bounce);
+}
+
+@keyframes heartPop {
+  0%   { transform: translate(-50%, -50%) scale(1); }
+  40%  { transform: translate(-50%, -50%) scale(1.35); }
+  70%  { transform: translate(-50%, -50%) scale(0.9); }
+  100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---------- COPY BUTTON ---------- */
 .copy {
   appearance: none;
   background: transparent;
@@ -889,7 +931,6 @@ button::-moz-focus-inner {
   transform: translateX(2px);
 }
 
-
 /* ---------- NAZM PAGE ---------- */
 .page-intro {
   text-align: center;
@@ -930,8 +971,7 @@ button::-moz-focus-inner {
   position: relative;
   display: flex;
   flex-direction: column;
-  transition: border-color 0.45s var(--ease), box-shadow 0.45s var(--ease),
-              transform 0.55s var(--ease-bounce), padding 0.5s var(--ease);
+  transition: border-color 0.45s var(--ease), box-shadow 0.45s var(--ease);
   animation: cardIn 0.7s var(--ease-out) both;
   will-change: transform, border-color;
   overflow: hidden;
@@ -1082,16 +1122,55 @@ button::-moz-focus-inner {
   transform: rotate(180deg);
 }
 
-@media (max-width: 720px) {
-  .page-intro { margin-bottom: 36px; }
-  .nazm-card { padding: 26px 22px 22px; }
-  .nazm-head { gap: 10px; padding-bottom: 14px; margin-bottom: 18px; }
-  .nazm-title { font-size: 1.3rem; }
-  .nazm-line { font-size: 1rem; line-height: 1.85; }
-  .nazm-body { max-height: 110px; }
-  .nazm-toggle { padding: 9px 18px; font-size: 0.72rem; }
+/* ---------- FAVOURITES PAGE ---------- */
+.fav-empty {
+  text-align: center;
+  padding: 100px 20px;
+  animation: rise 0.9s var(--ease-out) both;
 }
 
+.fav-empty-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+  color: var(--ink-mute);
+  margin-bottom: 22px;
+  transition: transform 0.6s var(--ease-bounce), border-color 0.4s var(--ease),
+              color 0.4s var(--ease);
+}
+
+.fav-empty:hover .fav-empty-icon {
+  transform: scale(1.06) rotate(-4deg);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.fav-empty-icon svg {
+  width: 26px;
+  height: 26px;
+}
+
+.fav-empty-text {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--ink-soft);
+  line-height: 1.7;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.fav-empty-hint {
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+  margin-top: 20px;
+}
 
 /* ---------- RESPONSIVE ---------- */
 @media (max-width: 720px) {
@@ -1114,6 +1193,13 @@ button::-moz-focus-inner {
   .about-avatar { width: 104px; height: 104px; }
   .about-desc { font-size: 1rem; }
   .btn { padding: 11px 20px; font-size: 0.78rem; }
+  .page-intro { margin-bottom: 36px; }
+  .nazm-card { padding: 26px 22px 22px; }
+  .nazm-head { gap: 10px; padding-bottom: 14px; margin-bottom: 18px; }
+  .nazm-title { font-size: 1.3rem; }
+  .nazm-line { font-size: 1rem; line-height: 1.85; }
+  .nazm-body { max-height: 110px; }
+  .nazm-toggle { padding: 9px 18px; font-size: 0.72rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

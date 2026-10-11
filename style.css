@@ -9,7 +9,7 @@
   --accent: #b8860b;
   --gold: #b8860b;
   --silver: #8a8a8a;
-  --platinum: #6b7a8f;
+  --platinum: #4f6f95;
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -236,6 +236,7 @@ button::-moz-focus-inner {
   padding: 80px 36px 32px;
   box-shadow: -24px 0 64px rgba(17, 17, 17, 0.08);
   will-change: transform;
+  overflow-y: auto;
 }
 
 .menu-panel.is-open {
@@ -246,19 +247,21 @@ button::-moz-focus-inner {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  flex: 1;
+  flex: 1 0 auto;
+  min-height: 0;
 }
 
 .menu-link {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 0;
+  padding: 16px 0;
   text-decoration: none;
   color: var(--ink);
   border-bottom: 1px solid var(--line);
   position: relative;
   transition: padding-left 0.45s var(--ease), color 0.35s var(--ease);
+  flex-shrink: 0;
 }
 
 .menu-link::before {
@@ -283,11 +286,13 @@ button::-moz-focus-inner {
 
 .menu-text {
   font-family: 'Playfair Display', Georgia, serif;
-  font-size: 1.5rem;
+  font-size: 1.35rem;
   font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.2;
+  line-height: 1.25;
   transition: transform 0.45s var(--ease);
+  display: block;
+  min-width: 0;
 }
 
 .menu-link:hover .menu-text {
@@ -304,6 +309,7 @@ button::-moz-focus-inner {
   opacity: 0;
   transform: translateX(-6px);
   transition: opacity 0.4s var(--ease), transform 0.4s var(--ease), color 0.4s var(--ease);
+  flex-shrink: 0;
 }
 
 .menu-link:hover .menu-arrow {
@@ -321,6 +327,7 @@ button::-moz-focus-inner {
   padding-top: 24px;
   border-top: 1px solid var(--line);
   margin-top: auto;
+  flex-shrink: 0;
 }
 
 .menu-sign {
@@ -397,6 +404,7 @@ button::-moz-focus-inner {
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
+  align-items: start;
 }
 
 .card {
@@ -405,10 +413,22 @@ button::-moz-focus-inner {
   position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 280px;
   transition: background 0.5s var(--ease);
   animation: cardIn 0.7s var(--ease-out) both;
   will-change: transform, background;
+}
+
+/* Adaptive sizing */
+.card.is-short {
+  min-height: 200px;
+}
+
+.card.is-med {
+  min-height: 280px;
+}
+
+.card.is-long {
+  min-height: 360px;
 }
 
 .card:hover {
@@ -448,6 +468,16 @@ button::-moz-focus-inner {
   transition: transform 0.6s var(--ease);
 }
 
+.card.is-short .card-body {
+  font-size: 1.28rem;
+  line-height: 1.85;
+}
+
+.card.is-long .card-body {
+  font-size: 1.18rem;
+  line-height: 1.95;
+}
+
 .card:hover .card-body {
   transform: translateY(-2px);
 }
@@ -481,17 +511,17 @@ button::-moz-focus-inner {
 
 .card-rank.rank-gold {
   color: var(--gold);
-  background: rgba(184, 134, 11, 0.06);
+  background: rgba(184, 134, 11, 0.07);
 }
 
 .card-rank.rank-silver {
   color: var(--silver);
-  background: rgba(138, 138, 138, 0.06);
+  background: rgba(138, 138, 138, 0.07);
 }
 
 .card-rank.rank-platinum {
   color: var(--platinum);
-  background: rgba(107, 122, 143, 0.06);
+  background: rgba(79, 111, 149, 0.09);
 }
 
 .card:hover .card-rank {
@@ -502,97 +532,6 @@ button::-moz-focus-inner {
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-/* ---------- LIKE BUTTON (with copy-style animation) ---------- */
-.like {
-  appearance: none;
-  background: transparent;
-  border: 1px solid var(--line-strong);
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--ink-soft);
-  position: relative;
-  line-height: 1;
-  transition: border-color 0.35s var(--ease), color 0.35s var(--ease),
-              background 0.35s var(--ease);
-}
-
-.like:hover {
-  border-color: var(--ink);
-  color: var(--ink);
-}
-
-.like svg {
-  width: 14px;
-  height: 14px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
-}
-
-.like .icon-heart-outline {
-  transform: translate(-50%, -50%);
-  opacity: 1;
-}
-
-.like .icon-heart-fill {
-  transform: translate(-50%, -50%) scale(0.6);
-  opacity: 0;
-}
-
-.like.is-liked {
-  border-color: var(--ink);
-  color: var(--paper);
-  background: var(--ink);
-}
-
-.like.is-liked .icon-heart-outline {
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.4);
-}
-
-.like.is-liked .icon-heart-fill {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1);
-}
-
-/* Rotating ring — same as copy */
-.like::before {
-  content: '';
-  position: absolute;
-  inset: -2px;
-  border-radius: 50%;
-  border: 1.5px solid transparent;
-  border-top-color: var(--ink);
-  opacity: 0;
-  transform: rotate(0deg);
-  transition: opacity 0.3s var(--ease);
-  pointer-events: none;
-}
-
-.like.is-animating::before {
-  opacity: 1;
-  animation: circleSpin 0.7s linear infinite;
-}
-
-/* Pop on the heart itself */
-.like.is-animating .icon-heart-fill,
-.like.is-animating .icon-heart-outline {
-  animation: heartPop 0.7s var(--ease-bounce);
-}
-
-@keyframes heartPop {
-  0%   { transform: translate(-50%, -50%) scale(1); }
-  40%  { transform: translate(-50%, -50%) scale(1.35); }
-  70%  { transform: translate(-50%, -50%) scale(0.9); }
-  100% { transform: translate(-50%, -50%) scale(1); }
 }
 
 /* ---------- COPY BUTTON ---------- */
@@ -610,7 +549,8 @@ button::-moz-focus-inner {
   color: var(--ink-soft);
   position: relative;
   line-height: 1;
-  transition: border-color 0.35s var(--ease), color 0.35s var(--ease);
+  transition: border-color 0.35s var(--ease), color 0.35s var(--ease),
+              background 0.35s var(--ease);
 }
 
 .copy:hover {
@@ -679,6 +619,90 @@ button::-moz-focus-inner {
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
+/* ---------- LIKE (FAVOURITE) BUTTON — same animation as copy ---------- */
+.like {
+  appearance: none;
+  background: transparent;
+  border: 1px solid var(--line-strong);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-soft);
+  position: relative;
+  line-height: 1;
+  transition: border-color 0.35s var(--ease), color 0.35s var(--ease),
+              background 0.35s var(--ease);
+}
+
+.like:hover {
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+.like svg {
+  width: 14px;
+  height: 14px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
+}
+
+/* Outline heart visible by default */
+.like .icon-heart-outline {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* Tick hidden by default (used to replace outline after cycling) */
+.like .icon-heart-fill {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.6);
+}
+
+/* Rotating ring — same as copy */
+.like::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid transparent;
+  border-top-color: var(--ink);
+  opacity: 0;
+  transform: rotate(0deg);
+  transition: opacity 0.3s var(--ease);
+  pointer-events: none;
+}
+
+.like.is-animating::before {
+  opacity: 1;
+  animation: circleSpin 0.7s linear infinite;
+}
+
+/* When liked → the button visually becomes "done" (dark bg + tick) */
+.like.is-liked {
+  border-color: var(--ink);
+  color: var(--paper);
+  background: var(--ink);
+}
+
+.like.is-liked .icon-heart-outline {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.4);
+}
+
+.like.is-liked .icon-heart-fill {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: checkPop 0.5s var(--ease-bounce);
+}
+
+/* ---------- CARD CORNER DECOR ---------- */
 .card::before,
 .card::after {
   content: '';
@@ -1122,7 +1146,7 @@ button::-moz-focus-inner {
   transform: rotate(180deg);
 }
 
-/* ---------- FAVOURITES PAGE ---------- */
+/* ---------- FAVOURITES EMPTY STATE ---------- */
 .fav-empty {
   text-align: center;
   padding: 100px 20px;
@@ -1182,9 +1206,12 @@ button::-moz-focus-inner {
   .menu-btn { width: 42px; height: 42px; }
   .menu-line { width: 14px; }
   .menu-panel { width: 300px; padding: 72px 28px 24px; }
-  .menu-text { font-size: 1.35rem; }
+  .menu-text { font-size: 1.2rem; }
   .grid { grid-template-columns: 1fr; }
   .card { padding: 32px 24px 26px; }
+  .card.is-short { min-height: 180px; }
+  .card.is-med { min-height: 240px; }
+  .card.is-long { min-height: 300px; }
   .card-body { font-size: 1.12rem; line-height: 1.9; }
   .content { padding: 32px 0 64px; }
   .filter-btn { font-size: 0.75rem; padding: 6px 12px; }

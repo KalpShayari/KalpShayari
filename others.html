@@ -57,6 +57,10 @@
         <span class="menu-text">Nazm &amp; Others</span>
         <span class="menu-arrow">→</span>
       </a>
+      <a href="fav.html" class="menu-link">
+        <span class="menu-text">Favourites</span>
+        <span class="menu-arrow">→</span>
+      </a>
       <a href="about.html" class="menu-link">
         <span class="menu-text">About</span>
         <span class="menu-arrow">→</span>
@@ -155,16 +159,7 @@
       const menuPanel = $('#menuPanel');
       const menuBackdrop = $('#menuBackdrop');
       const toTop = $('#toTop');
-      const toastEl = $('#toast');
       const nazmGrid = $('#nazmGrid');
-
-      let toastTimer = null;
-      function toast(message) {
-        toastEl.textContent = message;
-        toastEl.classList.add('is-on');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
-      }
 
       yearEl.textContent = new Date().getFullYear();
 
@@ -286,46 +281,6 @@
 
       renderNazms();
       checkScroll();
-
-      const ld = {
-        '@context': 'https://schema.org',
-        '@graph': [
-          {
-            '@type': 'WebSite',
-            '@id': 'https://kalpshayari.vercel.app/#website',
-            url: 'https://kalpshayari.vercel.app/',
-            name: 'Kalp Shayari',
-            description: 'Original shers written by Zeeshan Khan.',
-            inLanguage: 'en',
-            publisher: { '@id': 'https://kalpshayari.vercel.app/#person' }
-          },
-          {
-            '@type': 'Person',
-            '@id': 'https://kalpshayari.vercel.app/#person',
-            name: 'Zeeshan Khan',
-            alternateName: 'Zeeshan40u',
-            email: 'zeeshan40u@gmail.com',
-            url: 'https://relaytalk.vercel.app',
-            jobTitle: 'Writer & Poet',
-            knowsAbout: ['Shayari', 'Poetry', 'Urdu Literature', 'Hindi Literature', 'Nazm']
-          },
-          {
-            '@type': 'CollectionPage',
-            '@id': 'https://kalpshayari.vercel.app/others.html#collection',
-            url: 'https://kalpshayari.vercel.app/others.html',
-            name: 'Nazm & Others — Kalp Shayari',
-            description: 'Longer nazms by Zeeshan Khan. Verses that unfold slowly.',
-            inLanguage: 'en',
-            isPartOf: { '@id': 'https://kalpshayari.vercel.app/#website' },
-            author: { '@id': 'https://kalpshayari.vercel.app/#person' }
-          }
-        ]
-      };
-
-      const tag = document.createElement('script');
-      tag.type = 'application/ld+json';
-      tag.textContent = JSON.stringify(ld);
-      document.head.appendChild(tag);
     })();
   </script>
 </body>

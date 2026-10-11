@@ -10,96 +10,95 @@
   const SHAYARI = [
     {
       id: 's01',
-      category: 'love',
-      tag: 'Love',
-      text: 'तेरी आँखों में जो नशा है,\nवो किसी शराब में कहाँ।\nतेरे साथ जो पल गुज़ारे,\nवो किसी जन्नत से कम नहीं।',
-      em: 'जन्नत से कम नहीं'
+      rank: 'classic',
+      tag: 'Classic',
+      text: 'In your eyes I found a madness,\nthe kind no wine could ever give.\nEvery moment spent beside you,\nwas a heaven I got to live.',
+      em: 'a heaven I got to live'
     },
     {
       id: 's02',
-      category: 'sad',
-      tag: 'Sad',
-      text: 'दिल टूटा तो आवाज़ नहीं आई,\nबस खामोशी ने सब कह दिया।\nजो लोग हँसते हैं बहुत,\nउनके अंदर कुछ टूटा होता है।',
-      em: 'खामोशी'
+      rank: 'rare',
+      tag: 'Rare',
+      text: 'When the heart broke, it made no sound,\nonly silence said it all.\nThe ones who laugh the loudest,\nare the ones who quietly fall.',
+      em: 'only silence said it all'
     },
     {
       id: 's03',
-      category: 'life',
-      tag: 'Life',
-      text: 'ज़िंदगी एक किताब है,\nहर पन्ना एक नया सबक।\nजो पढ़ लेता है ध्यान से,\nवो कभी नहीं होता उदास।',
-      em: 'नया सबक'
+      rank: 'timeless',
+      tag: 'Timeless',
+      text: 'Life is just a book of pages,\nevery leaf a lesson learned.\nWhoever reads with open eyes,\nwill never feel alone or burned.',
+      em: 'every leaf a lesson learned'
     },
     {
       id: 's04',
-      category: 'friendship',
-      tag: 'Friendship',
-      text: 'दोस्ती में न कोई दूरी,\nन कोई मजबूरी।\nजो साथ खड़ा हो हर हाल में,\nवही है असली यार।',
-      em: 'असली यार'
+      rank: 'classic',
+      tag: 'Classic',
+      text: 'In friendship there is no distance,\nno reason and no bound.\nThe one who stands through every storm,\nis the truest friend I have found.',
+      em: 'the truest friend I have found'
     },
     {
       id: 's05',
-      category: 'love',
-      tag: 'Love',
-      text: 'मोहब्बत में जो मिलता है,\nवो सुकून कहीं और नहीं।\nतेरा हाथ थामे चलना,\nजैसे दुनिया जीत ली हो।',
-      em: 'सुकून'
+      rank: 'rare',
+      tag: 'Rare',
+      text: 'What love gives you in return,\nno other place can ever hold.\nWalking with your hand in mine,\nfeels like I have won the world.',
+      em: 'won the world'
     },
     {
       id: 's06',
-      category: 'sad',
-      tag: 'Sad',
-      text: 'रात की खामोशी में,\nतेरी यादें आती हैं।\nनींद तो आती है मगर,\nदिल को चैन नहीं आता।',
-      em: 'यादें'
+      rank: 'timeless',
+      tag: 'Timeless',
+      text: 'In the silence of the night,\nyour memories come to me.\nSleep arrives but peace does not,\nthe heart still longs to be free.',
+      em: 'your memories come to me'
     },
     {
       id: 's07',
-      category: 'life',
-      tag: 'Life',
-      text: 'हर मुश्किल के बाद,\nएक नया सवेरा होता है।\nबस हौसला रखना ज़रूरी है,\nफिर हर पल सुनहरा होता है।',
-      em: 'नया सवेरा'
+      rank: 'rare',
+      tag: 'Rare',
+      text: 'After every hardship comes\na morning bright and new.\nJust keep your courage close,\nevery moment turns gold for you.',
+      em: 'every moment turns gold'
     },
     {
       id: 's08',
-      category: 'friendship',
-      tag: 'Friendship',
-      text: 'वो दोस्त ही क्या,\nजो हँसी में साथ न हो।\nजो आँसू में भी साथ खड़ा हो,\nवही तो सच्चा यार हो।',
-      em: 'सच्चा यार'
+      rank: 'classic',
+      tag: 'Classic',
+      text: 'What is a friend who is not there\nwhen laughter fills the air?\nThe one who stands beside your tears,\nis the truest soul you will find.',
+      em: 'the truest soul you will find'
     },
     {
       id: 's09',
-      category: 'love',
-      tag: 'Love',
-      text: 'तेरे बिना ये दिल,\nजैसे सूना आँगन।\nतू आ जाए तो लगे,\nजैसे मिल गया जहाँ।',
-      em: 'सूना आँगन'
+      rank: 'timeless',
+      tag: 'Timeless',
+      text: 'Without you this heart is\nlike a courtyard left alone.\nWhen you return it feels\nlike I have finally found home.',
+      em: 'finally found home'
     },
     {
       id: 's10',
-      category: 'sad',
-      tag: 'Sad',
-      text: 'मुस्कुराना सीख लिया है,\nअब ग़म छुपाना आसान है।\nजो दिल में है वो कह न सकें,\nयही तो सबसे बड़ा नुकसान है।',
-      em: 'ग़म छुपाना'
+      rank: 'rare',
+      tag: 'Rare',
+      text: 'I learned to smile through the pain,\nhiding grief became an art.\nWhat stays inside and never speaks,\nis the heaviest thing in the heart.',
+      em: 'the heaviest thing in the heart'
     },
     {
       id: 's11',
-      category: 'life',
-      tag: 'Life',
-      text: 'सफ़र में मंज़िल न मिली,\nतो कोई बात नहीं।\nरास्ते ने जो सिखाया,\nवो किसी किताब में नहीं।',
-      em: 'रास्ते ने जो सिखाया'
+      rank: 'classic',
+      tag: 'Classic',
+      text: 'The road did not lead to the end,\nbut that is quite alright.\nWhat the journey taught me on the way,\nno book could ever write.',
+      em: 'no book could ever write'
     },
     {
       id: 's12',
-      category: 'friendship',
-      tag: 'Friendship',
-      text: 'दोस्त वो नहीं जो हर पल साथ हो,\nदोस्त वो है जो दिल के पास हो।\nदूरियाँ चाहे कितनी भी हों,\nयादों में हर पल पास हो।',
-      em: 'दिल के पास'
+      rank: 'timeless',
+      tag: 'Timeless',
+      text: 'A friend is not the one who stays\nbeside you every hour.\nA friend is one who lives inside\nyour heart with all its power.',
+      em: 'lives inside your heart'
     }
   ];
 
-  const CATEGORIES = [
-    { key: 'all', label: 'All' },
-    { key: 'love', label: 'Love' },
-    { key: 'sad', label: 'Sad' },
-    { key: 'life', label: 'Life' },
-    { key: 'friendship', label: 'Friendship' }
+  const RANKS = [
+    { key: 'all', label: 'All Ranks' },
+    { key: 'classic', label: 'Classic' },
+    { key: 'rare', label: 'Rare' },
+    { key: 'timeless', label: 'Timeless' }
   ];
 
   /* ---------- HELPERS ---------- */
@@ -115,12 +114,10 @@
       "'": '&#39;'
     }[c]));
 
-  // Highlight the em phrase inside the shayari text.
   function renderText(text, em) {
     const safe = escapeHTML(text);
     if (!em) return safe;
     const safeEm = escapeHTML(em);
-    // Only replace the first occurrence for a clean look.
     return safe.replace(safeEm, '<span class="card-em">' + safeEm + '</span>');
   }
 
@@ -144,6 +141,9 @@
   const emptyEl = $('#empty');
   const toastEl = $('#toast');
   const yearEl = $('#year');
+  const menuBtn = $('#menuBtn');
+  const menuPanel = $('#menuPanel');
+  const menuBackdrop = $('#menuBackdrop');
 
   /* ---------- TOAST ---------- */
   let toastTimer = null;
@@ -159,23 +159,64 @@
     try {
       localStorage.setItem('kalp.liked', JSON.stringify(Array.from(liked)));
     } catch (e) {
-      /* storage might be blocked — no big deal */
+      /* storage may be blocked — silent */
     }
   }
+
+  /* ---------- MENU ---------- */
+  let menuOpen = false;
+
+  function openMenu() {
+    menuOpen = true;
+    menuBtn.classList.add('is-open');
+    menuBtn.setAttribute('aria-expanded', 'true');
+    menuBtn.setAttribute('aria-label', 'Close menu');
+    menuPanel.classList.add('is-open');
+    menuPanel.setAttribute('aria-hidden', 'false');
+    menuBackdrop.hidden = false;
+    requestAnimationFrame(() => menuBackdrop.classList.add('is-on'));
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    menuOpen = false;
+    menuBtn.classList.remove('is-open');
+    menuBtn.setAttribute('aria-expanded', 'false');
+    menuBtn.setAttribute('aria-label', 'Open menu');
+    menuPanel.classList.remove('is-open');
+    menuPanel.setAttribute('aria-hidden', 'true');
+    menuBackdrop.classList.remove('is-on');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!menuOpen) menuBackdrop.hidden = true;
+    }, 500);
+  }
+
+  function toggleMenu() {
+    if (menuOpen) closeMenu();
+    else openMenu();
+  }
+
+  menuBtn.addEventListener('click', toggleMenu);
+  menuBackdrop.addEventListener('click', closeMenu);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menuOpen) closeMenu();
+  });
 
   /* ---------- RENDER FILTERS ---------- */
   function renderFilters() {
     filterRow.innerHTML = '';
-    CATEGORIES.forEach((cat) => {
+    RANKS.forEach((rank) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      btn.className = 'filter-btn' + (cat.key === activeFilter ? ' is-active' : '');
-      btn.dataset.filter = cat.key;
-      btn.textContent = cat.label;
-      btn.setAttribute('aria-pressed', String(cat.key === activeFilter));
+      btn.className = 'filter-btn' + (rank.key === activeFilter ? ' is-active' : '');
+      btn.dataset.filter = rank.key;
+      btn.textContent = rank.label;
+      btn.setAttribute('aria-pressed', String(rank.key === activeFilter));
       btn.addEventListener('click', () => {
-        if (activeFilter === cat.key) return;
-        activeFilter = cat.key;
+        if (activeFilter === rank.key) return;
+        activeFilter = rank.key;
         renderFilters();
         renderGrid();
       });
@@ -187,7 +228,7 @@
   function renderGrid() {
     const list = activeFilter === 'all'
       ? SHAYARI
-      : SHAYARI.filter((s) => s.category === activeFilter);
+      : SHAYARI.filter((s) => s.rank === activeFilter);
 
     gridEl.innerHTML = '';
 
@@ -204,7 +245,6 @@
       card.dataset.id = item.id;
 
       const indexLabel = String(SHAYARI.indexOf(item) + 1).padStart(2, '0');
-
       const isLiked = liked.has(item.id);
 
       card.innerHTML =
@@ -253,15 +293,15 @@
     renderFilters();
     renderGrid();
 
-    // SEO: JSON-LD structured data so search engines understand the collection.
+    /* ---------- SEO: JSON-LD STRUCTURED DATA ---------- */
     const ld = {
       '@context': 'https://schema.org',
       '@type': 'CollectionPage',
       name: 'Kalp Shayari — Words That Stay',
       description:
-        'A handpicked collection of Hindi and Urdu shayari on love, life, sadness, and friendship.',
+        'A handpicked collection of English shayari on love, life, loss, and friendship.',
       url: 'https://kalpshayari.com/',
-      inLanguage: 'hi',
+      inLanguage: 'en',
       mainEntity: {
         '@type': 'ItemList',
         numberOfItems: SHAYARI.length,

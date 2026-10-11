@@ -4,17 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="y2KUdk5NLGrxUgulLoxvA0a2y3jQlVPObdNtYkIef2U" />
-  <meta name="description" content="Favourites — Your saved shers from Kalp Shayari by Zeeshan Khan.">
+  <meta name="description" content="Favourites — Your saved shers from Kalp Shayari by Zeeshan Khan. The ones that stayed with you.">
+  <meta name="keywords" content="favourites, saved shayari, kalp shayari, zeeshan khan, liked shers, poetry collection">
   <meta name="author" content="Zeeshan Khan">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta name="theme-color" content="#ffffff">
+
   <meta property="og:site_name" content="Kalp Shayari">
   <meta property="og:title" content="Favourites — Kalp Shayari">
-  <meta property="og:description" content="Your saved shers from Kalp Shayari.">
+  <meta property="og:description" content="Your saved shers from Kalp Shayari by Zeeshan Khan.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://kalpshayari.vercel.app/fav.html">
-  <meta property="og:image" content="https://kalpshayari.vercel.app/shayari.png">
+  <meta property="og:image" content="https://kalpshayari.vercel.app/mybanner.png">
+  <meta property="og:image:secure_url" content="https://kalpshayari.vercel.app/mybanner.png">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Favourites — Kalp Shayari">
+  <meta property="og:locale" content="en_US">
+
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Favourites — Kalp Shayari">
+  <meta name="twitter:description" content="Your saved shers from Kalp Shayari.">
+  <meta name="twitter:image" content="https://kalpshayari.vercel.app/mybanner.png">
+  <meta name="twitter:image:alt" content="Favourites — Kalp Shayari">
+
   <link rel="canonical" href="https://kalpshayari.vercel.app/fav.html">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="shayari.png">
@@ -328,12 +342,10 @@
       }
 
       function handleUnlike(item, card, btn) {
-        // Trigger animation (ring + tick)
         btn.classList.remove('is-animating');
         void btn.offsetWidth;
         btn.classList.add('is-animating');
 
-        // Keep visual as liked briefly so ring/tick plays before removal
         liked.delete(item.id);
         persistLikes();
 

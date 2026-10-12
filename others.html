@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google-site-verification" content="y2KUdk5NLGrxUgulLoxvA0a2y3jQlVPObdNtYkIef2U" />
   <meta name="description" content="Nazm & Others — Longer poems and nazms by Zeeshan Khan. Quiet verses that unfold slowly, kept honestly.">
-  <meta name="keywords" content="nazm, nazms, kalp shayari, zeeshan khan, urdu nazm, hindi nazm, poetry, aankhon ka aaina, postman nazm">
+  <meta name="keywords" content="nazm, nazms, kalp shayari, zeeshan khan, urdu nazm, hindi nazm, poetry, aankhon ka aaina">
   <meta name="author" content="Zeeshan Khan">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <meta name="theme-color" content="#ffffff">
@@ -104,6 +104,8 @@
     </svg>
   </button>
 
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
   <script src="data.js"></script>
   <script src="storage.js"></script>
   <script>
@@ -124,6 +126,15 @@
       const menuBackdrop = $('#menuBackdrop');
       const toTop = $('#toTop');
       const nazmGrid = $('#nazmGrid');
+      const toastEl = $('#toast');
+
+      let toastTimer = null;
+      function toast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('is-on');
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
+      }
 
       yearEl.textContent = new Date().getFullYear();
 
@@ -198,6 +209,52 @@
         }).join('');
       }
 
+      function plainText(item) {
+        if (item.stanzas) {
+          return item.stanzas.map(function (s) { return s.join('\n'); }).join('\n\n');
+        }
+        return item.lines.join('\n');
+      }
+
+      function copyNazm(item, btn) {
+        const output = item.title + '\n\n' + plainText(item) + '\n\n— Zeeshan Khan';
+
+        const fallback = () => {
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = output;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.left = '-9999px';
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+          } catch (e) { void e; }
+        };
+
+        const done = () => {
+          btn.classList.remove('is-copying');
+          btn.classList.add('is-copied');
+          toast('Nazm copied');
+          setTimeout(() => btn.classList.remove('is-copied'), 1600);
+        };
+
+        btn.classList.add('is-copying');
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(output).then(() => {
+            setTimeout(done, 550);
+          }).catch(() => {
+            fallback();
+            setTimeout(done, 550);
+          });
+        } else {
+          fallback();
+          setTimeout(done, 550);
+        }
+      }
+
       function renderNazms() {
         nazmGrid.innerHTML = '';
         const fragment = document.createDocumentFragment();
@@ -226,6 +283,15 @@
                   '<polyline points="6 9 12 15 18 9"/>' +
                 '</svg>' +
               '</button>' +
+              '<button class="copy nazm-copy" type="button" aria-label="Copy nazm">' +
+                '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                  '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
+                  '<path d="M5 15V5a2 2 0 0 1 2-2h10"/>' +
+                '</svg>' +
+                '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+                  '<polyline points="4 12 10 18 20 6"/>' +
+                '</svg>' +
+              '</button>' +
             '</div>';
 
           const toggleBtn = card.querySelector('.nazm-toggle');
@@ -235,6 +301,12 @@
             const isExpanded = card.classList.toggle('is-expanded');
             toggleBtn.setAttribute('aria-expanded', String(isExpanded));
             toggleText.textContent = isExpanded ? 'Collapse' : 'Read full';
+          });
+
+          const copyBtn = card.querySelector('.nazm-copy');
+          copyBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            copyNazm(item, copyBtn);
           });
 
           fragment.appendChild(card);

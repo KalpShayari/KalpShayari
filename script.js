@@ -1,36 +1,8 @@
 (function () {
   'use strict';
 
-  const DATA = window.KALP_DATA;
-  const SHAYARI = DATA.SHAYARI;
-  const RANKS = DATA.RANKS;
-
   const $ = (sel, ctx) => (ctx || document).querySelector(sel);
-
-  const escapeHTML = (str) =>
-    str.replace(/[&<>"']/g, (c) => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[c]));
-
-  function renderText(text, em) {
-    const safe = escapeHTML(text);
-    if (!em) return safe;
-    const safeEm = escapeHTML(em);
-    return safe.replace(safeEm, '<span class="card-em">' + safeEm + '</span>');
-  }
-
-  // Card size class based on sher length
-  function sizeClass(text) {
-    const lines = text.split('\n').length;
-    const chars = text.replace(/\n/g, '').length;
-    if (lines <= 3 && chars <= 90) return 'is-short';
-    if (lines >= 5 || chars >= 180) return 'is-long';
-    return 'is-med';
-  }
-
-  const liked = window.KalpStore.asSet();
-
-  let activeFilter = 'all';
+  const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
 
   const gridEl = $('#grid');
   const filterRow = $('#filterRow');
@@ -51,10 +23,9 @@
     toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
   }
 
-  function persistLikes() {
-    window.KalpStore.setLiked(Array.from(liked));
-  }
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
+  /* ---------- MENU ---------- */
   let menuOpen = false;
 
   function openMenu() {
@@ -91,10 +62,12 @@
     });
   }
 
+  /* ---------- TO TOP ---------- */
   let toTopVisible = false;
   const SCROLL_THRESHOLD = 400;
 
   function checkScroll() {
+    if (!toTop) return;
     const shouldShow = window.scrollY > SCROLL_THRESHOLD;
     if (shouldShow !== toTopVisible) {
       toTopVisible = shouldShow;
@@ -119,28 +92,23 @@
     });
   }
 
-  function renderFilters() {
-    if (!filterRow) return;
-    filterRow.innerHTML = '';
-    RANKS.forEach((rank) => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'filter-btn' + (rank.key === activeFilter ? ' is-active' : '');
-      btn.dataset.filter = rank.key;
-      btn.textContent = rank.label;
-      btn.setAttribute('aria-pressed', String(rank.key === activeFilter));
-      btn.addEventListener('click', () => {
-        if (activeFilter === rank.key) return;
-        activeFilter = rank.key;
-        renderFilters();
-        renderGrid();
-      });
-      filterRow.appendChild(btn);
-    });
+  /* ---------- READ SHER FROM DOM ---------- */
+  function readSher(card) {
+    const id = card.dataset.id;
+    const rank = card.dataset.rank;
+    const bodyEl = card.querySelector('.card-body');
+    const rankEl = card.querySelector('.card-rank');
+
+    // Plain text with line breaks preserved
+    const text = bodyEl ? bodyEl.innerText.replace(/\u00a0/g, ' ').trim() : '';
+    const tag = rankEl ? rankEl.textContent.trim() : '';
+
+    return { id, rank, text, tag };
   }
 
-  function copySher(item, btn) {
-    const output = item.text + '\n\n— Zeeshan Khan';
+  /* ---------- COPY ---------- */
+  function copySher(sher, btn) {
+    const output = sher.text + '\n\n— Zeeshan Khan';
 
     const fallback = () => {
       try {
@@ -178,108 +146,109 @@
     }
   }
 
-  function buildLikeButton(isLiked) {
-    return '<button class="like' + (isLiked ? ' is-liked' : '') + '" type="button" ' +
-      'aria-label="Favourite this shayari" aria-pressed="' + isLiked + '">' +
-      '<svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
-      '</svg>' +
-      '<svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-        '<polyline points="4 12 10 18 20 6"/>' +
-      '</svg>' +
-    '</button>';
-  }
-
-  function buildCard(item, indexLabel) {
-    const card = document.createElement('article');
-    card.className = 'card ' + sizeClass(item.text);
-    card.dataset.id = item.id;
-
-    const isLiked = liked.has(item.id);
-
-    card.innerHTML =
-      '<span class="card-index">' + indexLabel + '</span>' +
-      '<div class="card-body">' + renderText(item.text, item.em) + '</div>' +
-      '<div class="card-foot">' +
-        '<span class="card-rank rank-' + item.rank + '">' + escapeHTML(item.tag) + '</span>' +
-        '<div class="card-actions">' +
-          '<button class="copy" type="button" aria-label="Copy sher">' +
-            '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-              '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
-              '<path d="M5 15V5a2 2 0 0 1 2-2h10"/>' +
-            '</svg>' +
-            '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-              '<polyline points="4 12 10 18 20 6"/>' +
-            '</svg>' +
-          '</button>' +
-          buildLikeButton(isLiked) +
-        '</div>' +
-      '</div>';
-
-    card.querySelector('.like').addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggleLike(item, card.querySelector('.like'));
-    });
-
-    card.querySelector('.copy').addEventListener('click', (e) => {
-      e.stopPropagation();
-      copySher(item, card.querySelector('.copy'));
-    });
-
-    return card;
-  }
-
-  function renderGrid() {
-    const list = activeFilter === 'all'
-      ? SHAYARI
-      : SHAYARI.filter((s) => s.rank === activeFilter);
-
-    gridEl.innerHTML = '';
-
-    if (list.length === 0) {
-      emptyEl.hidden = false;
-      return;
-    }
-    emptyEl.hidden = true;
-
-    const fragment = document.createDocumentFragment();
-
-    list.forEach((item, i) => {
-      const indexLabel = String(SHAYARI.indexOf(item) + 1).padStart(2, '0');
-      const card = buildCard(item, indexLabel);
-      card.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
-      fragment.appendChild(card);
-    });
-
-    gridEl.appendChild(fragment);
-  }
-
-  function toggleLike(item, btn) {
-    const isLiked = liked.has(item.id);
+  /* ---------- LIKE ---------- */
+  function toggleLike(sher, btn) {
+    const isLiked = window.KalpStore.isLiked(sher.id);
 
     btn.classList.remove('is-animating');
     void btn.offsetWidth;
     btn.classList.add('is-animating');
 
     if (isLiked) {
-      liked.delete(item.id);
+      window.KalpStore.removeFav(sher.id);
       btn.classList.remove('is-liked');
       btn.setAttribute('aria-pressed', 'false');
       toast('Removed');
     } else {
-      liked.add(item.id);
+      window.KalpStore.saveFav(sher);
       btn.classList.add('is-liked');
       btn.setAttribute('aria-pressed', 'true');
       toast('Saved to favourites');
     }
 
-    persistLikes();
-
     setTimeout(() => btn.classList.remove('is-animating'), 750);
   }
 
-  yearEl.textContent = new Date().getFullYear();
-  renderFilters();
-  renderGrid();
+  /* ---------- SYNC LIKE STATE FROM STORAGE ---------- */
+  function syncLikeStates() {
+    $$('.card', gridEl).forEach((card) => {
+      const id = card.dataset.id;
+      const likeBtn = card.querySelector('.like');
+      if (!likeBtn) return;
+
+      const liked = window.KalpStore.isLiked(id);
+      likeBtn.classList.toggle('is-liked', liked);
+      likeBtn.setAttribute('aria-pressed', String(liked));
+    });
+  }
+
+  /* ---------- WIRE UP CARDS ---------- */
+  function wireCards() {
+    $$('.card', gridEl).forEach((card, i) => {
+      card.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
+
+      const sher = readSher(card);
+      const copyBtn = card.querySelector('.copy');
+      const likeBtn = card.querySelector('.like');
+
+      if (copyBtn) {
+        copyBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          copySher(sher, copyBtn);
+        });
+      }
+
+      if (likeBtn) {
+        likeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          toggleLike(sher, likeBtn);
+        });
+      }
+    });
+
+    syncLikeStates();
+  }
+
+  /* ---------- FILTER ---------- */
+  let activeFilter = 'all';
+
+  function applyFilter() {
+    const cards = $$('.card', gridEl);
+    let visible = 0;
+
+    cards.forEach((card) => {
+      const match = activeFilter === 'all' || card.dataset.rank === activeFilter;
+      card.style.display = match ? '' : 'none';
+      if (match) visible++;
+    });
+
+    if (emptyEl) emptyEl.hidden = visible > 0;
+  }
+
+  function wireFilters() {
+    if (!filterRow) return;
+    const buttons = $$('.filter-btn', filterRow);
+
+    buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const key = btn.dataset.filter;
+        if (key === activeFilter) return;
+        activeFilter = key;
+
+        buttons.forEach((b) => {
+          const isActive = b.dataset.filter === key;
+          b.classList.toggle('is-active', isActive);
+          b.setAttribute('aria-pressed', String(isActive));
+        });
+
+        applyFilter();
+      });
+    });
+  }
+
+  /* ---------- INIT ---------- */
+  wireCards();
+  wireFilters();
+  applyFilter();
   checkScroll();
 })();

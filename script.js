@@ -222,7 +222,16 @@
       if (match) visible++;
     });
 
-    if (emptyEl) emptyEl.hidden = visible > 0;
+    if (!emptyEl) return;
+
+    if (visible === 0) {
+      // Inject text only now — keeps it out of raw HTML for crawlers
+      if (!emptyEl.textContent) emptyEl.textContent = 'Nothing here yet.';
+      emptyEl.hidden = false;
+    } else {
+      emptyEl.hidden = true;
+      emptyEl.textContent = '';
+    }
   }
 
   function wireFilters() {

@@ -88,7 +88,41 @@
         <h2 class="page-title">Nazm &amp; Others</h2>
         <p class="page-sub">longer verses, unfolding slowly</p>
       </header>
-      <div class="nazm-grid" id="nazmGrid"></div>
+      <div class="nazm-grid" id="nazmGrid">
+
+        <article class="nazm-card" data-id="n01">
+          <header class="nazm-head">
+            <span class="nazm-num">01</span>
+            <h3 class="nazm-title">Aankhon Ka Aaina</h3>
+            <span class="nazm-sub">Nazm</span>
+          </header>
+          <div class="nazm-body">
+            <span class="nazm-line">Maine tumhe dekha,</span>
+            <span class="nazm-line">Tumhari aankhon mein dekha,</span>
+            <span class="nazm-line">Tumhari aankhon mein khudko dekha,</span>
+            <span class="nazm-line">Khudko dekha, khudki aankhon mein dekha,</span>
+            <span class="nazm-line">Khudki aankhon mein maine tumhe dekha.</span>
+          </div>
+          <div class="nazm-foot">
+            <button class="nazm-toggle" type="button" aria-expanded="false">
+              <span class="nazm-toggle-text">Read full</span>
+              <svg class="nazm-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+            </button>
+            <button class="copy nazm-copy" type="button" aria-label="Copy nazm">
+              <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="11" height="11" rx="2"/>
+                <path d="M5 15V5a2 2 0 0 1 2-2h10"/>
+              </svg>
+              <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="4 12 10 18 20 6"/>
+              </svg>
+            </button>
+          </div>
+        </article>
+
+      </div>
     </div>
   </main>
 
@@ -106,219 +140,8 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="data.js"></script>
   <script src="storage.js"></script>
-  <script>
-    (function () {
-      'use strict';
-
-      const NAZM = window.KALP_DATA.NAZM;
-      const $ = (sel, ctx) => (ctx || document).querySelector(sel);
-
-      const escapeHTML = (str) =>
-        str.replace(/[&<>"']/g, (c) => ({
-          '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-        }[c]));
-
-      const yearEl = $('#year');
-      const menuBtn = $('#menuBtn');
-      const menuPanel = $('#menuPanel');
-      const menuBackdrop = $('#menuBackdrop');
-      const toTop = $('#toTop');
-      const nazmGrid = $('#nazmGrid');
-      const toastEl = $('#toast');
-
-      let toastTimer = null;
-      function toast(message) {
-        toastEl.textContent = message;
-        toastEl.classList.add('is-on');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
-      }
-
-      yearEl.textContent = new Date().getFullYear();
-
-      let menuOpen = false;
-
-      function openMenu() {
-        menuOpen = true;
-        menuBtn.classList.add('is-open');
-        menuBtn.setAttribute('aria-expanded', 'true');
-        menuBtn.setAttribute('aria-label', 'Close menu');
-        menuPanel.classList.add('is-open');
-        menuPanel.setAttribute('aria-hidden', 'false');
-        menuBackdrop.hidden = false;
-        requestAnimationFrame(() => menuBackdrop.classList.add('is-on'));
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeMenu() {
-        menuOpen = false;
-        menuBtn.classList.remove('is-open');
-        menuBtn.setAttribute('aria-expanded', 'false');
-        menuBtn.setAttribute('aria-label', 'Open menu');
-        menuPanel.classList.remove('is-open');
-        menuPanel.setAttribute('aria-hidden', 'true');
-        menuBackdrop.classList.remove('is-on');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-          if (!menuOpen) menuBackdrop.hidden = true;
-        }, 500);
-      }
-
-      menuBtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
-      menuBackdrop.addEventListener('click', closeMenu);
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && menuOpen) closeMenu();
-      });
-
-      let toTopVisible = false;
-      const SCROLL_THRESHOLD = 400;
-
-      function checkScroll() {
-        const shouldShow = window.scrollY > SCROLL_THRESHOLD;
-        if (shouldShow !== toTopVisible) {
-          toTopVisible = shouldShow;
-          toTop.classList.toggle('is-on', shouldShow);
-        }
-      }
-
-      let scrollTicking = false;
-      window.addEventListener('scroll', () => {
-        if (!scrollTicking) {
-          scrollTicking = true;
-          requestAnimationFrame(() => {
-            checkScroll();
-            scrollTicking = false;
-          });
-        }
-      }, { passive: true });
-
-      toTop.addEventListener('click', () => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      });
-
-      function buildLines(lines) {
-        return lines.map((l) => '<span class="nazm-line">' + escapeHTML(l) + '</span>').join('');
-      }
-
-      function buildStanzas(stanzas) {
-        return stanzas.map((stanza) => {
-          const inner = stanza.map((l) => '<span class="nazm-line">' + escapeHTML(l) + '</span>').join('');
-          return '<div class="nazm-stanza">' + inner + '</div>';
-        }).join('');
-      }
-
-      function plainText(item) {
-        if (item.stanzas) {
-          return item.stanzas.map(function (s) { return s.join('\n'); }).join('\n\n');
-        }
-        return item.lines.join('\n');
-      }
-
-      function copyNazm(item, btn) {
-        const output = item.title + '\n\n' + plainText(item) + '\n\n— Zeeshan Khan';
-
-        const fallback = () => {
-          try {
-            const ta = document.createElement('textarea');
-            ta.value = output;
-            ta.setAttribute('readonly', '');
-            ta.style.position = 'fixed';
-            ta.style.left = '-9999px';
-            document.body.appendChild(ta);
-            ta.select();
-            document.execCommand('copy');
-            document.body.removeChild(ta);
-          } catch (e) { void e; }
-        };
-
-        const done = () => {
-          btn.classList.remove('is-copying');
-          btn.classList.add('is-copied');
-          toast('Nazm copied');
-          setTimeout(() => btn.classList.remove('is-copied'), 1600);
-        };
-
-        btn.classList.add('is-copying');
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(output).then(() => {
-            setTimeout(done, 550);
-          }).catch(() => {
-            fallback();
-            setTimeout(done, 550);
-          });
-        } else {
-          fallback();
-          setTimeout(done, 550);
-        }
-      }
-
-      function renderNazms() {
-        nazmGrid.innerHTML = '';
-        const fragment = document.createDocumentFragment();
-
-        NAZM.forEach((item, i) => {
-          const card = document.createElement('article');
-          card.className = 'nazm-card';
-          card.dataset.id = item.id;
-          card.style.animationDelay = Math.min(i * 0.08, 0.4) + 's';
-
-          const bodyContent = item.stanzas
-            ? buildStanzas(item.stanzas)
-            : buildLines(item.lines);
-
-          card.innerHTML =
-            '<header class="nazm-head">' +
-              '<span class="nazm-num">' + String(i + 1).padStart(2, '0') + '</span>' +
-              '<h3 class="nazm-title">' + escapeHTML(item.title) + '</h3>' +
-              '<span class="nazm-sub">' + escapeHTML(item.subtitle) + '</span>' +
-            '</header>' +
-            '<div class="nazm-body">' + bodyContent + '</div>' +
-            '<div class="nazm-foot">' +
-              '<button class="nazm-toggle" type="button" aria-expanded="false">' +
-                '<span class="nazm-toggle-text">Read full</span>' +
-                '<svg class="nazm-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-                  '<polyline points="6 9 12 15 18 9"/>' +
-                '</svg>' +
-              '</button>' +
-              '<button class="copy nazm-copy" type="button" aria-label="Copy nazm">' +
-                '<svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-                  '<rect x="9" y="9" width="11" height="11" rx="2"/>' +
-                  '<path d="M5 15V5a2 2 0 0 1 2-2h10"/>' +
-                '</svg>' +
-                '<svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-                  '<polyline points="4 12 10 18 20 6"/>' +
-                '</svg>' +
-              '</button>' +
-            '</div>';
-
-          const toggleBtn = card.querySelector('.nazm-toggle');
-          const toggleText = card.querySelector('.nazm-toggle-text');
-
-          toggleBtn.addEventListener('click', () => {
-            const isExpanded = card.classList.toggle('is-expanded');
-            toggleBtn.setAttribute('aria-expanded', String(isExpanded));
-            toggleText.textContent = isExpanded ? 'Collapse' : 'Read full';
-          });
-
-          const copyBtn = card.querySelector('.nazm-copy');
-          copyBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            copyNazm(item, copyBtn);
-          });
-
-          fragment.appendChild(card);
-        });
-
-        nazmGrid.appendChild(fragment);
-      }
-
-      renderNazms();
-      checkScroll();
-    })();
-  </script>
+  <script src="nazm.js"></script>
 
   <script>
     if ('serviceWorker' in navigator) {

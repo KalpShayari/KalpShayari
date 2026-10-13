@@ -85,13 +85,188 @@
 
   <nav class="filters" aria-label="Shayari ranks">
     <div class="wrap">
-      <div class="filter-row" id="filterRow"></div>
+      <div class="filter-row" id="filterRow">
+        <button type="button" class="filter-btn is-active" data-filter="all" aria-pressed="true">All</button>
+        <button type="button" class="filter-btn" data-filter="gold" aria-pressed="false">Gold</button>
+        <button type="button" class="filter-btn" data-filter="silver" aria-pressed="false">Silver</button>
+        <button type="button" class="filter-btn" data-filter="platinum" aria-pressed="false">Platinum</button>
+      </div>
     </div>
   </nav>
 
   <main class="content">
     <div class="wrap">
-      <div class="grid" id="grid"></div>
+      <div class="grid" id="grid">
+
+        <article class="card is-med" data-id="s01" data-rank="gold">
+          <span class="card-index">01</span>
+          <div class="card-body">Aaine mein khudko dekho,
+gulab nazar aaye.
+Tumhara naam likhun,
+toh na jaane kyun <span class="card-em">sharab nazar aaye</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-gold">Gold</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-med" data-id="s06" data-rank="platinum">
+          <span class="card-index">02</span>
+          <div class="card-body">Duniya mein aaye ho,
+aur kahte ho main mohabbat se,
+apna dil nahi sita.
+Arre mekhane mein khade ho,
+aur kahte ho <span class="card-em">main sharab nahi pita</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-platinum">Platinum</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-short" data-id="s02" data-rank="silver">
+          <span class="card-index">03</span>
+          <div class="card-body">Dil ke darwaze par dastak di,
+ab dastak jahan di hai,
+wahan dil hi nahi milta.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-silver">Silver</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-med" data-id="s03" data-rank="platinum">
+          <span class="card-index">04</span>
+          <div class="card-body">Kehti hai tujh garib ko,
+meri gali ka rasta kya pata.
+Kambakht teri gali guzar guzar ke,
+<span class="card-em">hi garib hua hoon</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-platinum">Platinum</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-med" data-id="s04" data-rank="gold">
+          <span class="card-index">05</span>
+          <div class="card-body">Unki aankhon ki gehraiyon mein,
+mera dil kho chuka hai.
+Ab ye dil unka,
+par unka <span class="card-em">kisi aur ka ho chuka hai</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-gold">Gold</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-med" data-id="s05" data-rank="silver">
+          <span class="card-index">06</span>
+          <div class="card-body">Haqeeqat ne hadh par kar di hai,
+khwab di.
+Tumhe dekhke hamne bhi pi li,
+<span class="card-em">akhkhi bottle sharab di</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-silver">Silver</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-med" data-id="s07" data-rank="gold">
+          <span class="card-index">07</span>
+          <div class="card-body">Tumhare hathon mein mehndi dekhu,
+toh rang surkh laal nazar aata hai.
+Tumhari aankhon mein jab chand dekhu,
+toh <span class="card-em">chand mein chand nazar aata hai</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-gold">Gold</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card is-med" data-id="s08" data-rank="silver">
+          <span class="card-index">08</span>
+          <div class="card-body">Tumse aankhein milau toh,
+har baat bhul jata hoon.
+Tumhare haath ka bana khana khau,
+toh <span class="card-em">baakiyon ka swad bhul jata hoon</span>.</div>
+          <div class="card-foot">
+            <span class="card-rank rank-silver">Silver</span>
+            <div class="card-actions">
+              <button class="copy" type="button" aria-label="Copy sher">
+                <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                <svg class="icon-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+              <button class="like" type="button" aria-label="Favourite this shayari" aria-pressed="false">
+                <svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12 10 18 20 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </article>
+
+      </div>
       <p class="empty" id="empty" hidden>Nothing here yet.</p>
     </div>
   </main>
@@ -110,7 +285,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <script src="data.js"></script>
   <script src="storage.js"></script>
   <script src="script.js"></script>
 
@@ -123,5 +297,4 @@
       });
     }
   </script>
-</body>
-</html>
+</body

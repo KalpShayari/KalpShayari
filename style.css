@@ -400,11 +400,12 @@ button::-moz-focus-inner {
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  /* Start at 2 columns so cards never sit alone looking empty */
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
-  align-items: start;
+  align-items: stretch;
 }
 
 .card {
@@ -416,19 +417,14 @@ button::-moz-focus-inner {
   transition: background 0.5s var(--ease);
   animation: cardIn 0.7s var(--ease-out) both;
   will-change: transform, background;
+  min-height: 0;
 }
 
-/* Adaptive sizing */
-.card.is-short {
-  min-height: 200px;
-}
-
-.card.is-med {
-  min-height: 280px;
-}
-
+/* Cards size to their content — no more empty stretch */
+.card.is-short,
+.card.is-med,
 .card.is-long {
-  min-height: 360px;
+  min-height: 0;
 }
 
 .card:hover {
@@ -466,16 +462,6 @@ button::-moz-focus-inner {
   white-space: pre-line;
   letter-spacing: 0.005em;
   transition: transform 0.6s var(--ease);
-}
-
-.card.is-short .card-body {
-  font-size: 1.28rem;
-  line-height: 1.85;
-}
-
-.card.is-long .card-body {
-  font-size: 1.18rem;
-  line-height: 1.95;
 }
 
 .card:hover .card-body {
@@ -619,7 +605,7 @@ button::-moz-focus-inner {
   100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* ---------- LIKE (FAVOURITE) BUTTON — same animation as copy ---------- */
+/* ---------- LIKE BUTTON ---------- */
 .like {
   appearance: none;
   background: transparent;
@@ -653,19 +639,16 @@ button::-moz-focus-inner {
   transition: transform 0.5s var(--ease), opacity 0.3s var(--ease);
 }
 
-/* Outline heart visible by default */
 .like .icon-heart-outline {
   opacity: 1;
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* Tick hidden by default (used to replace outline after cycling) */
 .like .icon-heart-fill {
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.6);
 }
 
-/* Rotating ring — same as copy */
 .like::before {
   content: '';
   position: absolute;
@@ -684,7 +667,6 @@ button::-moz-focus-inner {
   animation: circleSpin 0.7s linear infinite;
 }
 
-/* When liked → the button visually becomes "done" (dark bg + tick) */
 .like.is-liked {
   border-color: var(--ink);
   color: var(--paper);
@@ -1197,6 +1179,29 @@ button::-moz-focus-inner {
 }
 
 /* ---------- RESPONSIVE ---------- */
+
+/* Wide desktop → 3 columns */
+@media (min-width: 1080px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* Ultra-wide (very large monitors) → 4 columns so cards never stretch */
+@media (min-width: 1600px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .wrap { padding: 0 22px; }
+  .card { padding: 36px 28px 28px; }
+  .card-body { font-size: 1.18rem; line-height: 1.9; }
+}
+
+/* Mobile */
 @media (max-width: 720px) {
   .wrap { padding: 0 18px; }
   .site-head { padding: 28px 0 28px; }
@@ -1207,11 +1212,10 @@ button::-moz-focus-inner {
   .menu-line { width: 14px; }
   .menu-panel { width: 300px; padding: 72px 28px 24px; }
   .menu-text { font-size: 1.2rem; }
-  .grid { grid-template-columns: 1fr; }
+  .grid {
+    grid-template-columns: 1fr;
+  }
   .card { padding: 32px 24px 26px; }
-  .card.is-short { min-height: 180px; }
-  .card.is-med { min-height: 240px; }
-  .card.is-long { min-height: 300px; }
   .card-body { font-size: 1.12rem; line-height: 1.9; }
   .content { padding: 32px 0 64px; }
   .filter-btn { font-size: 0.75rem; padding: 6px 12px; }

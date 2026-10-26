@@ -82,6 +82,16 @@
         <span class="menu-arrow">→</span>
       </a>
     </nav>
+
+    <button class="install-app-btn" id="installAppBtn" type="button" aria-label="Install KalpShayari as app" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3v12"/>
+        <path d="M7 10l5 5 5-5"/>
+        <path d="M5 21h14"/>
+      </svg>
+      <span>Download as App</span>
+    </button>
+
     <div class="menu-foot">
       <span class="menu-sign">— Zeeshan Khan</span>
     </div>
@@ -202,6 +212,8 @@
     })();
   </script>
 
+  <script src="pwa.js"></script>
+
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
@@ -210,6 +222,22 @@
         }).catch(function () {});
       });
     }
+  </script>
+
+  <script>
+    window.KalpShowInstallHint = function () {
+      var toastEl = document.getElementById('toast');
+      if (!toastEl) {
+        alert('To install: tap Share, then "Add to Home Screen".');
+        return;
+      }
+      toastEl.textContent = 'Tap Share → Add to Home Screen';
+      toastEl.classList.add('is-on');
+      clearTimeout(window.__kalpHintTimer);
+      window.__kalpHintTimer = setTimeout(function () {
+        toastEl.classList.remove('is-on');
+      }, 4000);
+    };
   </script>
 </body>
 </html>

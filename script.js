@@ -99,7 +99,6 @@
     const bodyEl = card.querySelector('.card-body');
     const rankEl = card.querySelector('.card-rank');
 
-    // Plain text with line breaks preserved
     const text = bodyEl ? bodyEl.innerText.replace(/\u00a0/g, ' ').trim() : '';
     const tag = rankEl ? rankEl.textContent.trim() : '';
 
@@ -182,6 +181,30 @@
     });
   }
 
+  /* ---------- PEEK / EXPAND ON TOUCH ---------- */
+  const isTouch = window.matchMedia('(hover: none)').matches;
+
+  function collapseAllExcept(except) {
+    $$('.card.is-clamped.is-expanded').forEach((card) => {
+      if (card !== except) card.classList.remove('is-expanded');
+    });
+  }
+
+  function wirePeek() {
+    if (!isTouch) return; // Desktop hover handles it via CSS
+
+    $$('.card.is-clamped').forEach((card) => {
+      card.addEventListener('click', (e) => {
+        // Let copy/like buttons do their own thing
+        if (e.target.closest('.card-actions')) return;
+
+        const willOpen = !card.classList.contains('is-expanded');
+        collapseAllExcept(card);
+        card.classList.toggle('is-expanded', willOpen);
+      });
+    });
+  }
+
   /* ---------- WIRE UP CARDS ---------- */
   function wireCards() {
     $$('.card', gridEl).forEach((card, i) => {
@@ -225,7 +248,6 @@
     if (!emptyEl) return;
 
     if (visible === 0) {
-      // Inject text only now — keeps it out of raw HTML for crawlers
       if (!emptyEl.textContent) emptyEl.textContent = 'Nothing here yet.';
       emptyEl.hidden = false;
     } else {
@@ -258,6 +280,7 @@
   /* ---------- INIT ---------- */
   wireCards();
   wireFilters();
+  wirePeek();
   applyFilter();
   checkScroll();
 })();

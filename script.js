@@ -149,23 +149,26 @@
   function toggleLike(sher, btn) {
     const isLiked = window.KalpStore.isLiked(sher.id);
 
-    btn.classList.remove('is-animating');
+    btn.classList.remove('is-animating', 'is-unliking');
     void btn.offsetWidth;
-    btn.classList.add('is-animating');
 
     if (isLiked) {
       window.KalpStore.removeFav(sher.id);
       btn.classList.remove('is-liked');
+      btn.classList.add('is-unliking');
       btn.setAttribute('aria-pressed', 'false');
       toast('Removed');
+
+      setTimeout(() => btn.classList.remove('is-unliking'), 450);
     } else {
+      btn.classList.add('is-animating');
       window.KalpStore.saveFav(sher);
       btn.classList.add('is-liked');
       btn.setAttribute('aria-pressed', 'true');
       toast('Saved to favourites');
-    }
 
-    setTimeout(() => btn.classList.remove('is-animating'), 750);
+      setTimeout(() => btn.classList.remove('is-animating'), 750);
+    }
   }
 
   /* ---------- SYNC LIKE STATE FROM STORAGE ---------- */
@@ -178,30 +181,6 @@
       const liked = window.KalpStore.isLiked(id);
       likeBtn.classList.toggle('is-liked', liked);
       likeBtn.setAttribute('aria-pressed', String(liked));
-    });
-  }
-
-  /* ---------- PEEK / EXPAND ON TOUCH ---------- */
-  const isTouch = window.matchMedia('(hover: none)').matches;
-
-  function collapseAllExcept(except) {
-    $$('.card.is-clamped.is-expanded').forEach((card) => {
-      if (card !== except) card.classList.remove('is-expanded');
-    });
-  }
-
-  function wirePeek() {
-    if (!isTouch) return; // Desktop hover handles it via CSS
-
-    $$('.card.is-clamped').forEach((card) => {
-      card.addEventListener('click', (e) => {
-        // Let copy/like buttons do their own thing
-        if (e.target.closest('.card-actions')) return;
-
-        const willOpen = !card.classList.contains('is-expanded');
-        collapseAllExcept(card);
-        card.classList.toggle('is-expanded', willOpen);
-      });
     });
   }
 
@@ -280,7 +259,6 @@
   /* ---------- INIT ---------- */
   wireCards();
   wireFilters();
-  wirePeek();
   applyFilter();
   checkScroll();
 })();

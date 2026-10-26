@@ -54,7 +54,10 @@ textarea,
 select,
 a {
   -webkit-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 button:focus-visible,
@@ -151,6 +154,7 @@ button::-moz-focus-inner {
   position: relative;
   z-index: 70;
   appearance: none;
+  -webkit-appearance: none;
   background: var(--paper);
   border: 1px solid var(--line-strong);
   width: 44px;
@@ -164,6 +168,7 @@ button::-moz-focus-inner {
   gap: 5px;
   padding: 0;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
   transition: transform 0.5s var(--ease-bounce), border-color 0.4s var(--ease),
               box-shadow 0.4s var(--ease), background 0.4s var(--ease);
   box-shadow: 0 1px 6px rgba(17, 17, 17, 0.06);
@@ -366,6 +371,7 @@ button::-moz-focus-inner {
 
 .filter-btn {
   appearance: none;
+  -webkit-appearance: none;
   border: 1px solid transparent;
   background: transparent;
   font-family: inherit;
@@ -378,6 +384,7 @@ button::-moz-focus-inner {
   position: relative;
   white-space: nowrap;
   flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
   transition: color 0.3s var(--ease), background 0.3s var(--ease), border-color 0.3s var(--ease);
 }
 
@@ -521,6 +528,7 @@ button::-moz-focus-inner {
 /* ---------- COPY BUTTON ---------- */
 .copy {
   appearance: none;
+  -webkit-appearance: none;
   background: transparent;
   border: 1px solid var(--line-strong);
   width: 34px;
@@ -533,6 +541,9 @@ button::-moz-focus-inner {
   color: var(--ink-soft);
   position: relative;
   line-height: 1;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
   transition: border-color 0.35s var(--ease), color 0.35s var(--ease),
               background 0.35s var(--ease);
 }
@@ -540,6 +551,12 @@ button::-moz-focus-inner {
 .copy:hover {
   border-color: var(--ink);
   color: var(--ink);
+}
+
+.copy:focus,
+.copy:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .copy svg {
@@ -606,6 +623,7 @@ button::-moz-focus-inner {
 /* ---------- LIKE BUTTON ---------- */
 .like {
   appearance: none;
+  -webkit-appearance: none;
   background: transparent;
   border: 1px solid var(--line-strong);
   width: 34px;
@@ -618,13 +636,26 @@ button::-moz-focus-inner {
   color: var(--ink-soft);
   position: relative;
   line-height: 1;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
   transition: border-color 0.35s var(--ease), color 0.35s var(--ease),
-              background 0.35s var(--ease);
+              background 0.35s var(--ease), transform 0.35s var(--ease);
 }
 
 .like:hover {
   border-color: var(--ink);
   color: var(--ink);
+}
+
+.like:active {
+  transform: scale(0.94);
+}
+
+.like:focus,
+.like:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .like svg {
@@ -682,6 +713,16 @@ button::-moz-focus-inner {
   animation: checkPop 0.5s var(--ease-bounce);
 }
 
+.like.is-unliking {
+  animation: likeBounceOut 0.4s var(--ease-bounce);
+}
+
+@keyframes likeBounceOut {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(0.86); }
+  100% { transform: scale(1); }
+}
+
 /* ---------- CARD CORNER DECOR ---------- */
 .card::before,
 .card::after {
@@ -713,51 +754,6 @@ button::-moz-focus-inner {
   opacity: 1;
 }
 
-/* ---------- PEEK / CLAMP ---------- */
-.card.is-clamped {
-  cursor: pointer;
-}
-
-.card.is-clamped .card-body {
-  --clamp-fade: 40px;
-  max-height: 155px;
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - var(--clamp-fade)), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 calc(100% - var(--clamp-fade)), transparent 100%);
-  transition: max-height 0.55s var(--ease-out), -webkit-mask-image 0.4s var(--ease), mask-image 0.4s var(--ease);
-}
-
-/* Hover-reveal on pointer devices only */
-@media (hover: hover) and (pointer: fine) {
-  .card.is-clamped:hover .card-body {
-    max-height: 600px;
-    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 100%);
-    mask-image: linear-gradient(to bottom, #000 0%, #000 100%);
-  }
-}
-
-/* Tap-reveal on touch devices */
-.card.is-clamped.is-expanded .card-body {
-  max-height: 600px;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 100%);
-}
-
-/* On touch, don't let the tap fire the copy/like buttons accidentally */
-@media (hover: none) {
-  .card.is-clamped .card-actions {
-    position: relative;
-    z-index: 2;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .card.is-clamped .card-body {
-    transition: none !important;
-  }
-}
-
-/* ---------- EMPTY STATE ---------- */
 .empty {
   text-align: center;
   padding: 80px 0;
@@ -784,6 +780,7 @@ button::-moz-focus-inner {
   bottom: 24px;
   z-index: 30;
   appearance: none;
+  -webkit-appearance: none;
   width: 46px;
   height: 46px;
   border-radius: 50%;
@@ -799,6 +796,7 @@ button::-moz-focus-inner {
   opacity: 0;
   visibility: hidden;
   transform: translateY(16px);
+  -webkit-tap-highlight-color: transparent;
   transition: opacity 0.4s var(--ease), transform 0.5s var(--ease-bounce),
               visibility 0.4s var(--ease), border-color 0.4s var(--ease),
               box-shadow 0.4s var(--ease), background 0.4s var(--ease),
@@ -944,6 +942,7 @@ button::-moz-focus-inner {
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
   transition: transform 0.45s var(--ease-bounce), box-shadow 0.4s var(--ease);
 }
 
@@ -1130,10 +1129,12 @@ button::-moz-focus-inner {
   border-top: 1px solid var(--line);
   display: flex;
   justify-content: center;
+  gap: 10px;
 }
 
 .nazm-toggle {
   appearance: none;
+  -webkit-appearance: none;
   background: transparent;
   border: 1px solid var(--ink);
   color: var(--ink);
@@ -1148,6 +1149,7 @@ button::-moz-focus-inner {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.35s var(--ease), color 0.35s var(--ease),
               transform 0.45s var(--ease-bounce), box-shadow 0.4s var(--ease);
 }
@@ -1251,9 +1253,7 @@ button::-moz-focus-inner {
   .menu-line { width: 14px; }
   .menu-panel { width: 300px; padding: 72px 28px 24px; }
   .menu-text { font-size: 1.2rem; }
-  .grid {
-    grid-template-columns: 1fr;
-  }
+  .grid { grid-template-columns: 1fr; }
   .card { padding: 32px 24px 26px; }
   .card-body { font-size: 1.12rem; line-height: 1.9; }
   .content { padding: 32px 0 64px; }

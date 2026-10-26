@@ -328,10 +328,65 @@ button::-moz-focus-inner {
   transform: translateX(0);
 }
 
+/* ---------- INSTALL APP BUTTON ---------- */
+.install-app-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  display: none; /* hidden by default; shown by JS when install is available */
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 24px;
+  padding: 14px 18px;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: var(--paper);
+  background: var(--ink);
+  border: 1px solid var(--ink);
+  border-radius: 100px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.4s var(--ease-bounce), box-shadow 0.4s var(--ease),
+              background 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+.install-app-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(17, 17, 17, 0.18);
+}
+
+.install-app-btn:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.install-app-btn svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  transition: transform 0.5s var(--ease-bounce);
+}
+
+.install-app-btn:hover svg {
+  transform: translateY(2px);
+}
+
+/* The button is visible when JS adds this class (Chrome/Edge + iOS fallback) */
+.install-app-btn.is-available {
+  display: inline-flex;
+}
+
+/* Hidden completely when site is already installed as PWA */
+.install-app-btn[hidden] {
+  display: none !important;
+}
+
 .menu-foot {
   padding-top: 24px;
   border-top: 1px solid var(--line);
-  margin-top: auto;
+  margin-top: 24px;
   flex-shrink: 0;
 }
 
@@ -839,6 +894,8 @@ button::-moz-focus-inner {
   pointer-events: none;
   transition: opacity 0.35s var(--ease), transform 0.45s var(--ease);
   z-index: 100;
+  max-width: 90vw;
+  text-align: center;
 }
 
 .toast.is-on {

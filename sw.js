@@ -1,7 +1,7 @@
 /* Kalp Shayari — Service Worker
  * Bump CACHE_VERSION whenever you change ANY file to force refresh.
  */
-const CACHE_VERSION = 'kalp-v9';
+const CACHE_VERSION = 'kalp-v10';
 const CACHE_NAME = 'kalp-cache-' + CACHE_VERSION;
 
 const CORE_ASSETS = [
@@ -14,6 +14,7 @@ const CORE_ASSETS = [
   './script.js',
   './nazm.js',
   './storage.js',
+  './manifest.json',
   './shayari.png',
   './profile.png',
   './mybanner.png',

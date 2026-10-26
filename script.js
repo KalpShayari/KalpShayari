@@ -1,264 +1,244 @@
 (function () {
-  'use strict';
+  "use strict";
 
-  const $ = (sel, ctx) => (ctx || document).querySelector(sel);
-  const $$ = (sel, ctx) => Array.from((ctx || document).querySelectorAll(sel));
+  const FLAG = "room.unlocked";
 
-  const gridEl = $('#grid');
-  const filterRow = $('#filterRow');
-  const emptyEl = $('#empty');
-  const toastEl = $('#toast');
-  const yearEl = $('#year');
-  const menuBtn = $('#menuBtn');
-  const menuPanel = $('#menuPanel');
-  const menuBackdrop = $('#menuBackdrop');
-  const toTop = $('#toTop');
+  /* ---------- elements ---------- */
+  const gate        = document.getElementById("gate");
+  const gateForm    = document.getElementById("gateForm");
+  const gateStatus  = document.getElementById("gateStatus");
+  const unlockBtn   = document.getElementById("unlockBtn");
+  const nameInput   = document.getElementById("nameInput");
+  const keyInputs   = [
+    document.getElementById("key1"),
+    document.getElementById("key2"),
+    document.getElementById("key3"),
+  ];
+  const riddleInput = document.getElementById("riddleInput");
+  const app         = document.getElementById("app");
+  const lockBtn     = document.getElementById("lockBtn");
+  const clockEl     = document.getElementById("clock");
+  const dateEl      = document.getElementById("dateLine");
+  const greetEl     = document.getElementById("greetWord");
 
-  let toastTimer = null;
-  function toast(message) {
-    if (!toastEl) return;
-    toastEl.textContent = message;
-    toastEl.classList.add('is-on');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove('is-on'), 1800);
+  /* ---------- helpers ---------- */
+  const tidy = (v) => String(v || "").trim().replace(/\s+/g, " ");
+  const raw  = (v) => String(v || "").trim();
+
+  function setStatus(msg, tone) {
+    gateStatus.textContent = msg;
+    gateStatus.classList.toggle("is-visible", Boolean(msg));
+    gateStatus.classList.toggle("is-error", tone === "error");
+    gateStatus.classList.toggle("is-ok", tone === "ok");
   }
 
-  if (yearEl) yearEl.textContent = new Date().getFullYear();
-
-  /* ---------- MENU ---------- */
-  let menuOpen = false;
-
-  function openMenu() {
-    menuOpen = true;
-    menuBtn.classList.add('is-open');
-    menuBtn.setAttribute('aria-expanded', 'true');
-    menuBtn.setAttribute('aria-label', 'Close menu');
-    menuPanel.classList.add('is-open');
-    menuPanel.setAttribute('aria-hidden', 'false');
-    menuBackdrop.hidden = false;
-    requestAnimationFrame(() => menuBackdrop.classList.add('is-on'));
-    document.body.style.overflow = 'hidden';
+  function mark(input, state) {
+    const f = input.closest(".field, .key");
+    if (!f) return;
+    f.classList.remove("is-wrong", "is-right");
+    if (state) f.classList.add(state);
   }
 
-  function closeMenu() {
-    menuOpen = false;
-    menuBtn.classList.remove('is-open');
-    menuBtn.setAttribute('aria-expanded', 'false');
-    menuBtn.setAttribute('aria-label', 'Open menu');
-    menuPanel.classList.remove('is-open');
-    menuPanel.setAttribute('aria-hidden', 'true');
-    menuBackdrop.classList.remove('is-on');
-    document.body.style.overflow = '';
-    setTimeout(() => {
-      if (!menuOpen) menuBackdrop.hidden = true;
-    }, 500);
+  function clearMarks() {
+    document.querySelectorAll(".field, .key").forEach((el) => el.classList.remove("is-wrong", "is-right"));
   }
 
-  if (menuBtn) {
-    menuBtn.addEventListener('click', () => menuOpen ? closeMenu() : openMenu());
-    menuBackdrop.addEventListener('click', closeMenu);
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && menuOpen) closeMenu();
-    });
+  function shake() {
+    gate.classList.remove("is-shaking");
+    void gate.offsetWidth;
+    gate.classList.add("is-shaking");
+    window.setTimeout(() => gate.classList.remove("is-shaking"), 450);
   }
 
-  /* ---------- TO TOP ---------- */
-  let toTopVisible = false;
-  const SCROLL_THRESHOLD = 400;
+  /* ---------- local preflight ---------- */
+  function preflight() {
+    clearMarks();
+    const name = tidy(nameInput.value);
+    const keys = keyInputs.map((el) => raw(el.value));
+    const word = raw(riddleInput.value);
 
-  function checkScroll() {
-    if (!toTop) return;
-    const shouldShow = window.scrollY > SCROLL_THRESHOLD;
-    if (shouldShow !== toTopVisible) {
-      toTopVisible = shouldShow;
-      toTop.classList.toggle('is-on', shouldShow);
+    if (!name && keys.every((k) => !k) && !word) {
+      setStatus("The waters are undisturbed. Fill the fields.", "error"); shake(); return null;
     }
-  }
-
-  let scrollTicking = false;
-  window.addEventListener('scroll', () => {
-    if (!scrollTicking) {
-      scrollTicking = true;
-      requestAnimationFrame(() => {
-        checkScroll();
-        scrollTicking = false;
-      });
+    if (!name) {
+      mark(nameInput, "is-wrong"); setStatus("Identity missing.", "error"); shake(); return null;
     }
-  }, { passive: true });
-
-  if (toTop) {
-    toTop.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  /* ---------- READ SHER FROM DOM ---------- */
-  function readSher(card) {
-    const id = card.dataset.id;
-    const rank = card.dataset.rank;
-    const bodyEl = card.querySelector('.card-body');
-    const rankEl = card.querySelector('.card-rank');
-
-    const text = bodyEl ? bodyEl.innerText.replace(/\u00a0/g, ' ').trim() : '';
-    const tag = rankEl ? rankEl.textContent.trim() : '';
-
-    return { id, rank, text, tag };
-  }
-
-  /* ---------- COPY ---------- */
-  function copySher(sher, btn) {
-    const output = sher.text + '\n\n— Zeeshan Khan';
-
-    const fallback = () => {
-      try {
-        const ta = document.createElement('textarea');
-        ta.value = output;
-        ta.setAttribute('readonly', '');
-        ta.style.position = 'fixed';
-        ta.style.left = '-9999px';
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand('copy');
-        document.body.removeChild(ta);
-      } catch (e) { void e; }
-    };
-
-    const done = () => {
-      btn.classList.remove('is-copying');
-      btn.classList.add('is-copied');
-      toast('Sher copied');
-      setTimeout(() => btn.classList.remove('is-copied'), 1600);
-    };
-
-    btn.classList.add('is-copying');
-
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(output).then(() => {
-        setTimeout(done, 550);
-      }).catch(() => {
-        fallback();
-        setTimeout(done, 550);
-      });
-    } else {
-      fallback();
-      setTimeout(done, 550);
+    if (keys.some((k) => !k)) {
+      keyInputs.forEach((el, i) => { if (!keys[i]) mark(el, "is-wrong"); });
+      setStatus("Three keys are required.", "error"); shake(); return null;
     }
-  }
-
-  /* ---------- LIKE ---------- */
-  function toggleLike(sher, btn) {
-    const isLiked = window.KalpStore.isLiked(sher.id);
-
-    btn.classList.remove('is-animating', 'is-unliking');
-    void btn.offsetWidth;
-
-    if (isLiked) {
-      window.KalpStore.removeFav(sher.id);
-      btn.classList.remove('is-liked');
-      btn.classList.add('is-unliking');
-      btn.setAttribute('aria-pressed', 'false');
-      toast('Removed');
-
-      setTimeout(() => btn.classList.remove('is-unliking'), 450);
-    } else {
-      btn.classList.add('is-animating');
-      window.KalpStore.saveFav(sher);
-      btn.classList.add('is-liked');
-      btn.setAttribute('aria-pressed', 'true');
-      toast('Saved to favourites');
-
-      setTimeout(() => btn.classList.remove('is-animating'), 750);
+    if (!word) {
+      mark(riddleInput, "is-wrong"); setStatus("The riddle remains unsolved.", "error"); shake(); return null;
     }
+    return { name, keys, word };
   }
 
-  /* ---------- SYNC LIKE STATE FROM STORAGE ---------- */
-  function syncLikeStates() {
-    $$('.card', gridEl).forEach((card) => {
-      const id = card.dataset.id;
-      const likeBtn = card.querySelector('.like');
-      if (!likeBtn) return;
+  /* ---------- unlock ---------- */
+  async function attemptUnlock() {
+    if (!window.Space || typeof window.Space.unlockRoom !== "function") {
+      setStatus("System offline.", "error"); return;
+    }
+    const creds = preflight();
+    if (!creds) return;
 
-      const liked = window.KalpStore.isLiked(id);
-      likeBtn.classList.toggle('is-liked', liked);
-      likeBtn.setAttribute('aria-pressed', String(liked));
-    });
-  }
+    unlockBtn.classList.add("is-busy");
+    unlockBtn.disabled = true;
+    setStatus("Parting the tide...", "ok");
 
-  /* ---------- WIRE UP CARDS ---------- */
-  function wireCards() {
-    $$('.card', gridEl).forEach((card, i) => {
-      card.style.animationDelay = Math.min(i * 0.04, 0.4) + 's';
+    try {
+      const result = await window.Space.unlockRoom(creds);
 
-      const sher = readSher(card);
-      const copyBtn = card.querySelector('.copy');
-      const likeBtn = card.querySelector('.like');
-
-      if (copyBtn) {
-        copyBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          copySher(sher, copyBtn);
-        });
+      if (result && result.success) {
+        try { sessionStorage.setItem(FLAG, "1"); } catch (e) {}
+        gate.classList.add("is-leaving");
+        document.body.classList.remove("is-locked");
+        window.setTimeout(() => {
+          gate.hidden = true;
+          app.hidden = false;
+          unlockBtn.classList.remove("is-busy");
+          unlockBtn.disabled = false;
+          startApp();
+        }, 600); // Faster fade out
+        return;
       }
 
-      if (likeBtn) {
-        likeBtn.addEventListener('click', (e) => {
-          e.stopPropagation();
-          toggleLike(sher, likeBtn);
-        });
-      }
-    });
-
-    syncLikeStates();
-  }
-
-  /* ---------- FILTER ---------- */
-  let activeFilter = 'all';
-
-  function applyFilter() {
-    const cards = $$('.card', gridEl);
-    let visible = 0;
-
-    cards.forEach((card) => {
-      const match = activeFilter === 'all' || card.dataset.rank === activeFilter;
-      card.style.display = match ? '' : 'none';
-      if (match) visible++;
-    });
-
-    if (!emptyEl) return;
-
-    if (visible === 0) {
-      if (!emptyEl.textContent) emptyEl.textContent = 'Nothing here yet.';
-      emptyEl.hidden = false;
-    } else {
-      emptyEl.hidden = true;
-      emptyEl.textContent = '';
+      unlockBtn.classList.remove("is-busy");
+      unlockBtn.disabled = false;
+      mark(nameInput, "is-wrong");
+      keyInputs.forEach((el) => mark(el, "is-wrong"));
+      mark(riddleInput, "is-wrong");
+      setStatus("The water rejects you.", "error");
+      shake();
+    } catch (err) {
+      unlockBtn.classList.remove("is-busy");
+      unlockBtn.disabled = false;
+      setStatus("Connection lost.", "error");
+      shake();
     }
   }
 
-  function wireFilters() {
-    if (!filterRow) return;
-    const buttons = $$('.filter-btn', filterRow);
+  gateForm.addEventListener("submit", (e) => { e.preventDefault(); attemptUnlock(); });
 
-    buttons.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const key = btn.dataset.filter;
-        if (key === activeFilter) return;
-        activeFilter = key;
+  /* ---------- lock ---------- */
+  function lock() {
+    try { sessionStorage.removeItem(FLAG); } catch (e) {}
+    app.hidden = true;
+    gate.hidden = false;
+    document.body.classList.add("is-locked");
+    gate.classList.remove("is-leaving");
+    gateForm.reset();
+    clearMarks();
+    setStatus("");
+    unlockBtn.classList.remove("is-busy");
+    unlockBtn.disabled = false;
+    window.scrollTo({ top: 0, behavior: "auto" });
+    window.setTimeout(() => nameInput.focus({ preventScroll: true }), 260);
+  }
+  lockBtn.addEventListener("click", lock);
 
-        buttons.forEach((b) => {
-          const isActive = b.dataset.filter === key;
-          b.classList.toggle('is-active', isActive);
-          b.setAttribute('aria-pressed', String(isActive));
+  /* ---------- input cleanup ---------- */
+  keyInputs.forEach((input) => {
+    input.addEventListener("input", () => { const f = input.closest(".key"); if (f) f.classList.remove("is-wrong"); });
+  });
+  [nameInput, riddleInput].forEach((input) => {
+    input.addEventListener("input", () => { const f = input.closest(".field"); if (f) f.classList.remove("is-wrong"); });
+  });
+
+  /* ---------- navigation ---------- */
+  const navButtons = Array.from(document.querySelectorAll("[data-nav]"));
+  const pages      = Array.from(document.querySelectorAll(".page"));
+
+  function goTo(name) {
+    const target = document.querySelector('.page[data-page="' + name + '"]');
+    if (!target) return;
+    pages.forEach((p) => p.classList.remove("is-active"));
+    target.classList.add("is-active");
+    navButtons.forEach((b) => b.classList.toggle("is-active", b.dataset.nav === name));
+    revealScan(target);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+  navButtons.forEach((btn) => btn.addEventListener("click", () => goTo(btn.dataset.nav)));
+
+  /* ---------- reveal on scroll ---------- */
+  let observer = null;
+  function revealScan(root) {
+    const scope = root || document;
+    const items = scope.querySelectorAll(".reveal:not(.is-in)");
+    if (!("IntersectionObserver" in window)) {
+      items.forEach((el) => el.classList.add("is-in")); return;
+    }
+    if (!observer) {
+      observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const siblings = Array.from(el.parentElement.children).filter((n) => n.classList.contains("reveal"));
+          const i = siblings.indexOf(el);
+          window.setTimeout(() => el.classList.add("is-in"), Math.min(i, 6) * 50); // Faster stagger
+          observer.unobserve(el);
         });
-
-        applyFilter();
-      });
-    });
+      }, { threshold: 0.14, rootMargin: "0px 0px -40px 0px" });
+    }
+    items.forEach((el) => observer.observe(el));
   }
 
-  /* ---------- INIT ---------- */
-  wireCards();
-  wireFilters();
-  applyFilter();
-  checkScroll();
+  /* ---------- clock + greeting ---------- */
+  function paintClock() {
+    if (!clockEl) return;
+    const now = new Date();
+    clockEl.textContent = String(now.getHours()).padStart(2, "0") + ":" + String(now.getMinutes()).padStart(2, "0");
+    if (dateEl) {
+      dateEl.textContent = now.toLocaleDateString(undefined, { weekday: "long", day: "numeric", month: "long" });
+    }
+    if (greetEl) {
+      const h = now.getHours();
+      let w = "Evening";
+      if (h < 5) w = "Night";
+      else if (h < 12) w = "Morning";
+      else if (h < 17) w = "Afternoon";
+      greetEl.textContent = w;
+    }
+  }
+  let clockTimer = null;
+  function startClock() {
+    paintClock();
+    if (clockTimer) window.clearInterval(clockTimer);
+    clockTimer = window.setInterval(paintClock, 15000);
+  }
+
+  /* ---------- app boot ---------- */
+  let appStarted = false;
+  function startApp() {
+    startClock();
+    revealScan(document);
+    if (!appStarted) { appStarted = true; window.setTimeout(() => revealScan(document), 200); }
+  }
+
+  /* ---------- session restore ---------- */
+  (function restore() {
+    let open = false;
+    try { open = sessionStorage.getItem(FLAG) === "1"; } catch (e) {}
+    if (open) {
+      gate.hidden = true;
+      gate.classList.add("is-leaving");
+      document.body.classList.remove("is-locked");
+      app.hidden = false;
+      startApp();
+    } else {
+      window.setTimeout(() => nameInput.focus({ preventScroll: true }), 720);
+    }
+  })();
+
+  /* ---------- keyboard ---------- */
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !app.hidden) lock();
+  });
+  keyInputs.forEach((input, i) => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      const next = keyInputs[i + 1];
+      if (next && next.value === "") { e.preventDefault(); next.focus(); }
+    });
+  });
+
 })();

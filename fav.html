@@ -2,13 +2,17 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta name="google-site-verification" content="y2KUdk5NLGrxUgulLoxvA0a2y3jQlVPObdNtYkIef2U" />
   <meta name="description" content="Favourites — Your saved shers from Kalp Shayari by Zeeshan Khan. The ones that stayed with you.">
   <meta name="keywords" content="favourites, saved shayari, kalp shayari, zeeshan khan, liked shers, poetry collection">
   <meta name="author" content="Zeeshan Khan">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#000000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Kalp Shayari">
 
   <meta property="og:site_name" content="Kalp Shayari">
   <meta property="og:title" content="Favourites — Kalp Shayari">
@@ -30,6 +34,7 @@
   <meta name="twitter:image:alt" content="Favourites — Kalp Shayari">
 
   <link rel="canonical" href="https://kalpshayari.vercel.app/fav.html">
+  <link rel="manifest" href="/manifest.json">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="shayari.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -161,7 +166,6 @@
 
       if (yearEl) yearEl.textContent = new Date().getFullYear();
 
-      /* ---------- MENU ---------- */
       let menuOpen = false;
 
       function openMenu() {
@@ -198,7 +202,6 @@
         });
       }
 
-      /* ---------- TO TOP ---------- */
       let toTopVisible = false;
       const SCROLL_THRESHOLD = 400;
 
@@ -228,7 +231,6 @@
         });
       }
 
-      /* ---------- COPY ---------- */
       function copySher(sher, btn) {
         const output = sher.text + '\n\n— Zeeshan Khan';
 
@@ -268,20 +270,18 @@
         }
       }
 
-      /* ---------- LIKE BUTTON HTML ---------- */
       function buildLikeButton(isLiked) {
         return '<button class="like' + (isLiked ? ' is-liked' : '') + '" type="button" ' +
           'aria-label="Favourite this shayari" aria-pressed="' + isLiked + '">' +
           '<svg class="icon-heart-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
             '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
           '</svg>' +
-          '<svg class="icon-heart-fill" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<polyline points="4 12 10 18 20 6"/>' +
+          '<svg class="icon-heart-fill" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>' +
           '</svg>' +
         '</button>';
       }
 
-      /* ---------- RENDER ---------- */
       function renderFavs() {
         const list = window.KalpStore.getFavs();
 
@@ -303,7 +303,6 @@
           card.style.animationDelay = Math.min(i * 0.06, 0.4) + 's';
 
           const indexLabel = String(i + 1).padStart(2, '0');
-          const em = ''; // em highlighting is lost on favs — text kept plain
 
           card.innerHTML =
             '<span class="card-index">' + indexLabel + '</span>' +
@@ -341,9 +340,9 @@
       }
 
       function handleUnlike(item, card, btn) {
-        btn.classList.remove('is-animating');
+        btn.classList.remove('is-animating', 'is-unliking');
         void btn.offsetWidth;
-        btn.classList.add('is-animating');
+        btn.classList.add('is-unliking');
 
         window.KalpStore.removeFav(item.id);
 

@@ -1,7 +1,7 @@
 /* KalpShayari — Service Worker
  * Bump CACHE_VERSION whenever you change ANY file to force refresh.
  */
-const CACHE_VERSION = 'kalp-v12';
+const CACHE_VERSION = 'kalp-v13';
 const CACHE_NAME = 'kalp-cache-' + CACHE_VERSION;
 
 const CORE_ASSETS = [

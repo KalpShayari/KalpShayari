@@ -332,7 +332,7 @@ button::-moz-focus-inner {
 .install-app-btn {
   appearance: none;
   -webkit-appearance: none;
-  display: none; /* hidden by default; shown by JS when install is available */
+  display: none;
   align-items: center;
   gap: 12px;
   width: 100%;
@@ -373,12 +373,10 @@ button::-moz-focus-inner {
   transform: translateY(2px);
 }
 
-/* The button is visible when JS adds this class (Chrome/Edge + iOS fallback) */
 .install-app-btn.is-available {
   display: inline-flex;
 }
 
-/* Hidden completely when site is already installed as PWA */
 .install-app-btn[hidden] {
   display: none !important;
 }
@@ -555,17 +553,17 @@ button::-moz-focus-inner {
   transition: transform 0.4s var(--ease);
 }
 
-.card-rank.rank-gold {
+.card-rank.rank-couplet {
   color: var(--gold);
   background: rgba(184, 134, 11, 0.07);
 }
 
-.card-rank.rank-silver {
+.card-rank.rank-medium {
   color: var(--silver);
   background: rgba(138, 138, 138, 0.07);
 }
 
-.card-rank.rank-platinum {
+.card-rank.rank-long {
   color: var(--platinum);
   background: rgba(79, 111, 149, 0.09);
 }
